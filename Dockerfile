@@ -14,4 +14,4 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 8080
+EXPOSE 4200
