@@ -24,4 +24,4 @@ jobs:
       - name: npm install and npm run build
         run: |
           npm i
-          npm run start
+          npm run build
