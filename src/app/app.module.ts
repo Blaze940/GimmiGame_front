@@ -6,9 +6,9 @@ import { LandpageComponent } from './pages/landpage/landpage.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent } from './components/header/header.component';
 import { AppResumeCardComponent } from './components/app-resume-card/app-resume-card.component';
-import { LoginCardComponent } from './components/login-card/login-card.component';
-import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
+//import { LoginCardComponent } from './components/login-card/login-card.component';
+//import { LoginComponent } from './pages/login/login.component';
+//import { RegisterComponent } from './pages/register/register.component';
 import { RegisterCardComponent } from './components/register-card/register-card.component';
 
 @NgModule({
@@ -17,9 +17,9 @@ import { RegisterCardComponent } from './components/register-card/register-card.
     LandpageComponent,
     HeaderComponent,
     AppResumeCardComponent,
-    LoginCardComponent,
-    LoginComponent,
-    RegisterComponent,
+//    LoginCardComponent,
+//    LoginComponent,
+//    RegisterComponent,
     RegisterCardComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
