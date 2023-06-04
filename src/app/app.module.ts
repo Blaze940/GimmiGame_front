@@ -9,7 +9,8 @@ import { AppResumeCardComponent } from './components/app-resume-card/app-resume-
 //import { LoginCardComponent } from './components/login-card/login-card.component';
 //import { LoginComponent } from './pages/login/login.component';
 //import { RegisterComponent } from './pages/register/register.component';
-import { RegisterCardComponent } from './components/register-card/register-card.component';
+//import { RegisterCardComponent } from './components/register-card/register-card.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -20,9 +21,9 @@ import { RegisterCardComponent } from './components/register-card/register-card.
 //    LoginCardComponent,
 //    LoginComponent,
 //    RegisterComponent,
-    RegisterCardComponent,
+//    RegisterCardComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

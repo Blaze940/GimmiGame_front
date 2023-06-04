@@ -3,9 +3,7 @@
     <div class="text-center lg:text-left">
       <h1 class="text-5xl font-bold">Connectez-vous !</h1>
       <p class="py-6">
-        Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-        excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a
-        id nisi.
+        Vous êtes GimmiGamer ? Connectez-vous pour accéder à votre espace personnel.
       </p>
     </div>
     <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
@@ -15,7 +13,7 @@
             <label class="label">
               <span class="label-text">Pseudo</span>
             </label>
-            <input type="text" formControlName="pseudo" placeholder="pseudo" class="input input-bordered" />
+            <input type="text" formControlName="pseudo" placeholder="Saisir pseudo" class="input input-bordered" />
             <div *ngIf="loginForm.get('pseudo')?.invalid && (loginForm.get('pseudo')?.dirty || loginForm.get('pseudo')?.touched)" class="text-error">Pseudo est requis et doit avoir entre 3 et 20 caractères.</div>
           </div>
           <div class="form-control">
@@ -25,7 +23,7 @@
             <input
               type="password"
               formControlName="password"
-              placeholder="monMdp"
+              placeholder="Saisir mot de passe"
               class="input input-bordered"
             />
             <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="text-error">Mot de passe est requis et doit avoir entre 4 et 30 caractères.</div>
