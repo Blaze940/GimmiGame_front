@@ -1,0 +1,91 @@
+{
+  "name": "GimmiFront",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "generators": {},
+  "sourceRoot": "apps/GimmiFront/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/apps/GimmiFront",
+        "index": "apps/GimmiFront/src/index.html",
+        "main": "apps/GimmiFront/src/main.ts",
+        "polyfills": "apps/GimmiFront/src/polyfills.ts",
+        "tsConfig": "apps/GimmiFront/tsconfig.app.json",
+        "assets": [
+          "apps/GimmiFront/src/favicon.ico",
+          "apps/GimmiFront/src/assets"
+        ],
+        "styles": ["apps/GimmiFront/src/styles.css"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/GimmiFront/src/environments/environment.ts",
+              "with": "apps/GimmiFront/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "GimmiFront:build:production"
+        },
+        "development": {
+          "browserTarget": "GimmiFront:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "GimmiFront:build"
+      }
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "main": "apps/GimmiFront/src/test.ts",
+        "polyfills": "apps/GimmiFront/src/polyfills.ts",
+        "tsConfig": "apps/GimmiFront/tsconfig.spec.json",
+        "karmaConfig": "apps/GimmiFront/karma.conf.js",
+        "assets": [
+          "apps/GimmiFront/src/favicon.ico",
+          "apps/GimmiFront/src/assets"
+        ],
+        "styles": ["apps/GimmiFront/src/styles.css"],
+        "scripts": []
+      }
+    }
+  }
+}

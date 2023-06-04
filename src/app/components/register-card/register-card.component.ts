@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {CommonModule} from "@angular/common";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register-card',
-  standalone: true,
-  imports: [CommonModule,ReactiveFormsModule],
   templateUrl: './register-card.component.html',
   styleUrls: ['./register-card.component.css'],
 })
@@ -30,11 +27,11 @@ export class RegisterCardComponent implements OnInit {
       return;
     }
 
-    const username = this.registrationForm.controls['pseudo'].value;
+    const pseudo = this.registrationForm.controls['pseudo'].value;
     const password = this.registrationForm.controls['password'].value;
     const email = this.registrationForm.controls['email'].value;
 
-    console.log('Username:', username);
+    console.log('pseudo:', pseudo);
     console.log('Password:', password);
     console.log('Email:', email);
 

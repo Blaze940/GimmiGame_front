@@ -4,8 +4,6 @@
 
 export const environment = {
   production: false,
-  API_URL: 'http://localhost:3000/gimmiAPI/',
-  //BE CAREFUL : The slash at the end could be important
 };
 
 /*

@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
-import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-login-card',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login-card.component.html',
   styleUrls: ['./login-card.component.css'],
 })
@@ -32,6 +29,10 @@ export class LoginCardComponent implements OnInit {
     // Exemple de gestion de la soumission du formulaire
     const pseudo = this.loginForm.controls['pseudo'].value;
     const password = this.loginForm.controls['password'].value;
+
+
+
+
 
     console.log('Pseudo:', pseudo);
     console.log('Mot de passe:', password);
