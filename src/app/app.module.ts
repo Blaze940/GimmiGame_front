@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
+import {HttpClientModule} from "@angular/common/http";
 import { AppComponent } from './app.component';
 import { LandpageComponent } from './pages/landpage/landpage.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -10,6 +11,7 @@ import { LoginCardComponent } from './components/login-card/login-card.component
 //import { LoginComponent } from './pages/login/login.component';
 //import { RegisterComponent } from './pages/register/register.component';
 import { RegisterCardComponent } from './components/register-card/register-card.component';
+import {UserAPIService} from "./_services/userAPI.service";
 
 
 @NgModule({
@@ -23,8 +25,8 @@ import { RegisterCardComponent } from './components/register-card/register-card.
 //    RegisterComponent,
     RegisterCardComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule,ReactiveFormsModule],
-  providers: [],
+  imports: [BrowserModule, AppRoutingModule,ReactiveFormsModule, HttpClientModule],
+  providers: [UserAPIService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -11,7 +11,7 @@ import {environment} from "../../environments/environment";
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserAPIService {
 
   base_URL: string = environment.API_URL + 'users/'
 
