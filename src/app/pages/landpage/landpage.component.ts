@@ -9,4 +9,6 @@ export class LandpageComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  ///Mettre condition pour charger user si connecté
 }

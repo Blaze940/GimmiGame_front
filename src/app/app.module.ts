@@ -12,6 +12,7 @@ import { LoginCardComponent } from './components/login-card/login-card.component
 //import { RegisterComponent } from './pages/register/register.component';
 import { RegisterCardComponent } from './components/register-card/register-card.component';
 import {UserAPIService} from "./_services/userAPI.service";
+import { SpinnerComponent } from './components/_tools/spinner/spinner.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import {UserAPIService} from "./_services/userAPI.service";
 //    LoginComponent,
 //    RegisterComponent,
     RegisterCardComponent,
+    SpinnerComponent,
   ],
   imports: [BrowserModule, AppRoutingModule,ReactiveFormsModule, HttpClientModule],
   providers: [UserAPIService],

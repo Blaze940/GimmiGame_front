@@ -32,4 +32,8 @@ export class TokenService {
     //maybe add Item('pseudo') and remove it here
     this.router.navigate(['/login']);
   }
+
+  clearStorage() : void {
+    localStorage.clear();
+  }
 }

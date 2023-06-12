@@ -32,5 +32,4 @@ export class UserAPIService {
     return this.http.get<IUser[]>(this.base_URL+'all');
   }
 
-
 }

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from "@angular/router";
-import {UserAPIService} from "../../_services/userAPI.service";
-import {ISignUp} from "../../_interfaces/ISignUp";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from "@angular/router";
+import { UserAPIService } from "../../_services/userAPI.service";
+import { ISignUp } from "../../_interfaces/ISignUp";
+import { IToken } from "../../_interfaces/IToken";
+import { TokenService } from "../../_services/token.service";
 
 @Component({
   selector: 'app-register-card',
@@ -11,14 +13,25 @@ import {ISignUp} from "../../_interfaces/ISignUp";
 })
 export class RegisterCardComponent implements OnInit {
   registrationForm!: FormGroup;
-  registrationFormSubmitted! : ISignUp;
+  registrationFormSubmitted!: ISignUp;
+  errorMessage = '';
+  successMessage = '';
 
-  error = ''
   loadingSpinner = false;
+  showStatusMessage = false;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private userAPIService : UserAPIService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private userAPIService: UserAPIService,
+    private tokenService: TokenService
+  ) {}
 
   ngOnInit(): void {
+    this.initRegistrationForm();
+  }
+
+  initRegistrationForm(): void {
     this.registrationForm = this.formBuilder.group({
       pseudo: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(30)]],
@@ -29,33 +42,43 @@ export class RegisterCardComponent implements OnInit {
       pseudo: '',
       password: '',
       email: null
-    }
+    };
   }
 
-  async onSubmit() {
+  async onSubmit(): Promise<void> {
     if (this.registrationForm.invalid) {
       return;
     }
 
+    this.errorMessage = '';
+    this.loadingSpinner = true;
+    this.showStatusMessage = false;
     this.fillCompletedForm();
 
     try {
-      const userTokenCreated = await this.userAPIService.signUp(this.registrationFormSubmitted).toPromise();
-      //console.log("Welcome :" + JSON.stringify(userTokenCreated));
-      await this.router.navigate(['/welcome']);
-    } catch (error : any) {
-      console.log(error);
-      this.error = error.toString();
+      const userTokenCreated: IToken | undefined = await this.userAPIService.signUp(this.registrationFormSubmitted).toPromise();
+
+      if(userTokenCreated) {
+        this.tokenService.saveToken(userTokenCreated.token);
+      }
+      this.successMessage =
+        "Bienvenue dans ton monde " + this.registrationFormSubmitted.pseudo +" !";
+      this.registrationForm.reset();
+
+      //Timeout to let the user read the success message
+      setTimeout(() => {
+             this.router.navigate(['/welcome']);
+      }, 5000);
+
+    } catch (error: any) {
+      this.errorMessage = "Ce pseudo ou cette adresse email existe déjà.";
+      this.showStatusMessage = true;
+    } finally {
+      this.loadingSpinner = false;
     }
-
-
-
-    // Exemple de navigation vers une autre page
-    // this.loadingSpinner = true;
-    // this.router.navigate(['/welcome']);
   }
 
-  fillCompletedForm() : void {
+  private fillCompletedForm(): void {
     const pseudoSubmitted = this.registrationForm.controls['pseudo'].value;
     const passwordSubmitted = this.registrationForm.controls['password'].value;
     const emailSubmitted = this.registrationForm.controls['email'].value;
@@ -64,6 +87,4 @@ export class RegisterCardComponent implements OnInit {
     this.registrationFormSubmitted.password = passwordSubmitted;
     this.registrationFormSubmitted.email = emailSubmitted;
   }
-
-
 }

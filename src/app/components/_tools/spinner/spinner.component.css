@@ -1,0 +1,17 @@
+.custom-spinner {
+  width: 30px; /* Ajustez la taille selon vos besoins */
+  height: 30px; /* Ajustez la taille selon vos besoins */
+  border: 3px solid #ccc; /* Couleur et épaisseur de la bordure */
+  border-top-color: #666; /* Couleur de la bordure supérieure */
+  border-radius: 50%; /* Forme du spinner */
+  animation: spin 1s infinite linear; /* Animation de rotation */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
