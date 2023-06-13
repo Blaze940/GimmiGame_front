@@ -12,18 +12,23 @@ import { RegisterComponent } from './pages/register/register.component';
 import { RegisterCardComponent } from './components/register-card/register-card.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LandpageComponent,
-    HeaderComponent,
-    AppResumeCardComponent,
-    LoginCardComponent,
-    LoginComponent,
-    RegisterComponent,
+    declarations: [
+        AppComponent,
+        LandpageComponent,
+        HeaderComponent,
+        AppResumeCardComponent,
+        LoginCardComponent,
+        LoginComponent,
+        RegisterComponent,
+        RegisterCardComponent,
+    ],
+    imports: [BrowserModule, AppRoutingModule],
+    providers: [],
+    bootstrap: [AppComponent],
+  exports: [
     RegisterCardComponent,
-  ],
-  imports: [BrowserModule, AppRoutingModule],
-  providers: [],
-  bootstrap: [AppComponent],
+    HeaderComponent,
+    LoginCardComponent
+  ]
 })
 export class AppModule {}

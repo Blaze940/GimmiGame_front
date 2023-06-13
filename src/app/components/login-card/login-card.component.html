@@ -1,11 +1,20 @@
 <div class="hero min-h-screen bg-base-200">
   <div class="hero-content flex-col lg:flex-row-reverse">
-    <div class="text-center lg:text-left">
-      <h1 class="text-5xl font-bold">Connectez-vous !</h1>
-      <p class="py-6">
-        Vous êtes GimmiGamer ? Connectez-vous pour accéder à votre espace personnel.
-      </p>
-    </div>
+    <ng-container *ngIf="successMessage; else loginSection">
+      <div class="text-center lg:text-left">
+        <h1 class="text-5xl font-bold">{{ successMessage }}</h1>
+      </div>
+    </ng-container>
+
+    <ng-template #loginSection>
+      <div class="text-center lg:text-left">
+        <h1 class="text-5xl font-bold">Connectez-vous !</h1>
+        <p class="py-6">
+          Vous êtes GimmiGamer ? Connectez-vous pour accéder à votre espace personnel.
+        </p>
+      </div>
+    </ng-template>
+
     <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
       <div class="card-body">
         <form *ngIf="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -28,13 +37,21 @@
             />
             <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="text-error">Mot de passe est requis et doit avoir entre 4 et 30 caractères.</div>
             <label class="label">
-              <a href="#" class="label-text-alt link link-hover">Mot de passe oublié?</a>
+              <a href="#" class="label-text-alt link link-hover">Mot de passe oublié ?</a>
             </label>
           </div>
           <div class="form-control mt-6">
             <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary">Login</button>
           </div>
+          <div *ngIf="loadingSpinner" class="spinner-container">
+            <app-spinner></app-spinner>
+          </div>
         </form>
+        <div *ngIf="errorMessage" class="mt-4 text-center text-error">{{ errorMessage }}</div>
+        <div class="mt-4 flex items-center justify-center">
+          <p class="text-sm">Pas encore de compte ?</p>
+          <a href="/register" class="ml-2 text-sm font-medium text-primary">S'enregistrer</a>
+        </div>
       </div>
     </div>
   </div>

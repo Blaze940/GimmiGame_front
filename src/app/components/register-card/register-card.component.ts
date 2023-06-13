@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from "@angular/router";
+import {NavigationExtras, Router} from "@angular/router";
 import { UserAPIService } from "../../_services/userAPI.service";
 import { ISignUp } from "../../_interfaces/ISignUp";
 import { IToken } from "../../_interfaces/IToken";
@@ -31,20 +31,6 @@ export class RegisterCardComponent implements OnInit {
     this.initRegistrationForm();
   }
 
-  initRegistrationForm(): void {
-    this.registrationForm = this.formBuilder.group({
-      pseudo: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(30)]],
-      email: [null, [Validators.email]],
-    });
-
-    this.registrationFormSubmitted = {
-      pseudo: '',
-      password: '',
-      email: null
-    };
-  }
-
   async onSubmit(): Promise<void> {
     if (this.registrationForm.invalid) {
       return;
@@ -67,8 +53,8 @@ export class RegisterCardComponent implements OnInit {
 
       //Timeout to let the user read the success message
       setTimeout(() => {
-             this.router.navigate(['/welcome']);
-      }, 5000);
+        this.router.navigate(['/welcome']);
+      }, 3000);
 
     } catch (error: any) {
       this.errorMessage = "Ce pseudo ou cette adresse email existe déjà.";
@@ -79,12 +65,22 @@ export class RegisterCardComponent implements OnInit {
   }
 
   private fillCompletedForm(): void {
-    const pseudoSubmitted = this.registrationForm.controls['pseudo'].value;
-    const passwordSubmitted = this.registrationForm.controls['password'].value;
-    const emailSubmitted = this.registrationForm.controls['email'].value;
+    this.registrationFormSubmitted.pseudo = this.registrationForm.controls['pseudo'].value;
+    this.registrationFormSubmitted.password = this.registrationForm.controls['password'].value;
+    this.registrationFormSubmitted.email = this.registrationForm.controls['email'].value;
+  }
 
-    this.registrationFormSubmitted.pseudo = pseudoSubmitted;
-    this.registrationFormSubmitted.password = passwordSubmitted;
-    this.registrationFormSubmitted.email = emailSubmitted;
+  private initRegistrationForm(): void {
+    this.registrationForm = this.formBuilder.group({
+      pseudo: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(30)]],
+      email: [null, [Validators.email]],
+    });
+
+    this.registrationFormSubmitted = {
+      pseudo: '',
+      password: '',
+      email: null
+    };
   }
 }
