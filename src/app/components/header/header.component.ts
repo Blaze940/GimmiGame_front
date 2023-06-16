@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ThemeService} from "../../_services/theme.service";
 
 @Component({
   selector: 'app-header',
@@ -6,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  constructor() {}
+  constructor(public themeService : ThemeService) {}
 
   ngOnInit(): void {}
+
+
 }
