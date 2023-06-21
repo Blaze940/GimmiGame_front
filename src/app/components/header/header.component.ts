@@ -7,9 +7,15 @@ import {ThemeService} from "../../_services/theme.service";
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
+
+  isDarkTheme: boolean = true;
   constructor(public themeService : ThemeService) {}
 
   ngOnInit(): void {}
 
+  switchTheme() {
+    this.themeService.switch();
+    this.isDarkTheme = !this.isDarkTheme;
+  }
 
 }

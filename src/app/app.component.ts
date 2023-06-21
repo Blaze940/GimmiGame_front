@@ -8,9 +8,14 @@ import { ThemeService } from "./_services/theme.service";
 })
 export class AppComponent implements OnInit {
   title = 'GimmiFront';
+  theme: string = 'dark';
 
   constructor(public themeService: ThemeService) {}
 
   ngOnInit(): void {
+    this.themeService.setTheme(localStorage.getItem('appTheme') || 'dark');
+    this.themeService.getTheme().subscribe((theme) => {
+      this.theme = theme;
+    });
   }
 }
