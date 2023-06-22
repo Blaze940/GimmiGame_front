@@ -35,7 +35,7 @@
           </div>
           <div class="form-control">
             <label class="label">
-              <span class="label-text">Email</span>
+              <span class="label-text">Email (facultatif)</span>
             </label>
             <input type="email" formControlName="email" placeholder="email@example.com" class="input input-bordered" />
             <div *ngIf="registrationForm?.get('email')?.invalid && (registrationForm?.get('email')?.dirty || registrationForm?.get('email')?.touched)" class="text-error">Veuillez entrer une adresse email valide.</div>

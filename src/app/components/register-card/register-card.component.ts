@@ -5,6 +5,7 @@ import { UserAPIService } from "../../_services/userAPI.service";
 import { ISignUp } from "../../_interfaces/ISignUp";
 import { IToken } from "../../_interfaces/IToken";
 import { TokenService } from "../../_services/token.service";
+import {UserService} from "../../_services/user.service";
 
 @Component({
   selector: 'app-register-card',
@@ -23,8 +24,7 @@ export class RegisterCardComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private userAPIService: UserAPIService,
-    private tokenService: TokenService
+    private userService : UserService
   ) {}
 
   ngOnInit(): void {
@@ -39,21 +39,20 @@ export class RegisterCardComponent implements OnInit {
     this.errorMessage = '';
     this.loadingSpinner = true;
     this.showStatusMessage = false;
-    this.fillCompletedForm();
+    this.registrationFormSubmitted = this.registrationForm.value;
 
     try {
-      const userTokenCreated: IToken | undefined = await this.userAPIService.signUp(this.registrationFormSubmitted).toPromise();
+      await this.userService.register(this.registrationFormSubmitted);
 
-      if(userTokenCreated) {
-        this.tokenService.saveToken(userTokenCreated.token);
-      }
       this.successMessage =
         "Bienvenue dans ton monde " + this.registrationFormSubmitted.pseudo +" !";
       this.registrationForm.reset();
 
       //Timeout to let the user read the success message
       setTimeout(() => {
-        this.router.navigate(['/welcome']);
+        this.router.navigate(['/']).then(() => {
+          window.location.href = '/?refresh=true';
+        });
       }, 3000);
 
     } catch (error: any) {
@@ -62,12 +61,6 @@ export class RegisterCardComponent implements OnInit {
     } finally {
       this.loadingSpinner = false;
     }
-  }
-
-  private fillCompletedForm(): void {
-    this.registrationFormSubmitted.pseudo = this.registrationForm.controls['pseudo'].value;
-    this.registrationFormSubmitted.password = this.registrationForm.controls['password'].value;
-    this.registrationFormSubmitted.email = this.registrationForm.controls['email'].value;
   }
 
   private initRegistrationForm(): void {

@@ -14,6 +14,8 @@ import { SpinnerComponent } from './components/_tools/spinner/spinner.component'
 import {CommonModule} from "@angular/common";
 import {LoginComponent} from "./pages/login/login.component";
 import {RegisterComponent} from "./pages/register/register.component";
+import {TokenService} from "./_services/token.service";
+import {UserService} from "./_services/user.service";
 
 
 @NgModule({
@@ -29,7 +31,7 @@ import {RegisterComponent} from "./pages/register/register.component";
     SpinnerComponent,
   ],
   imports: [CommonModule, BrowserModule, AppRoutingModule,ReactiveFormsModule, HttpClientModule],
-  providers: [UserAPIService],
+  providers: [UserAPIService,TokenService,UserService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

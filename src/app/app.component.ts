@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ThemeService } from "./_services/theme.service";
+import {UserService} from "./_services/user.service";
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,8 @@ export class AppComponent implements OnInit {
   title = 'GimmiFront';
   theme: string = 'dark';
 
-  constructor(public themeService: ThemeService) {}
+
+  constructor(public themeService: ThemeService, private userService : UserService) {}
 
   ngOnInit(): void {
     this.themeService.setTheme(localStorage.getItem('appTheme') || 'dark');
@@ -18,4 +20,6 @@ export class AppComponent implements OnInit {
       this.theme = theme;
     });
   }
+
+
 }

@@ -8,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class LandpageComponent implements OnInit {
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ///Mettre condition pour charger user si connecté
 }

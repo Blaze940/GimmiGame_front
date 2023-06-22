@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ThemeService} from "../../_services/theme.service";
+import {UserService} from "../../_services/user.service";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-header',
@@ -9,13 +11,26 @@ import {ThemeService} from "../../_services/theme.service";
 export class HeaderComponent implements OnInit {
 
   isDarkTheme: boolean = true;
-  constructor(public themeService : ThemeService) {}
+  isLogged: boolean = false;
+  constructor(public themeService : ThemeService, private userService : UserService, private changeDetectorRef : ChangeDetectorRef) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.setLoggedUser();
+  }
 
   switchTheme() {
     this.themeService.switch();
     this.isDarkTheme = !this.isDarkTheme;
+  }
+
+  // setPseudo() : void {
+  //   this.userPseudo = this.userService.getCurrentUserPseudo();
+  //   console.log("pseudo: " + this.userPseudo);
+  // }
+
+  setLoggedUser() : void {
+    this.isLogged = this.userService.isLogged();
+    this.changeDetectorRef.detectChanges();
   }
 
 }

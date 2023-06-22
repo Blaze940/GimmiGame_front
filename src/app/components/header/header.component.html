@@ -7,7 +7,7 @@
         </svg>
       </label>
       <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-        <li><a href="/welcome">Accueil</a></li>
+        <li><a href="/">Accueil</a></li>
         <li><a>Profil</a></li>
         <li><a>Jeux et parties</a></li>
         <li><a>Mes amis</a></li>
@@ -15,11 +15,21 @@
         <li><a>A propos</a></li>
       </ul>
     </div>
+    <div *ngIf="isLogged" class="avatar online">
+      <div class="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+        <img src= "assets/images/avatarUserImage.jpg" />
+      </div>
+    </div>
+    <div *ngIf="!isLogged" class="avatar offline">
+      <div class="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+        <img src= "assets/images/avatarUserImage.jpg" />
+      </div>
+    </div>
   </div>
 
 
   <div class="navbar-center">
-    <a href="/welcome" class="btn btn-ghost normal-case text-xl">GimmiGame</a>
+    <a href="/" class="btn btn-ghost normal-case text-xl">GimmiGame</a>
   </div>
 
 

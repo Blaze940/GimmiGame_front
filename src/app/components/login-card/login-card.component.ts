@@ -5,6 +5,8 @@ import {ISignUp} from "../../_interfaces/ISignUp";
 import {UserAPIService} from "../../_services/userAPI.service";
 import {TokenService} from "../../_services/token.service";
 import {ISignIn} from "../../_interfaces/ISignIn";
+import {IToken} from "../../_interfaces/IToken";
+import {UserService} from "../../_services/user.service";
 
 @Component({
   selector: 'app-login-card',
@@ -23,15 +25,14 @@ export class LoginCardComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private userAPIService: UserAPIService,
-    private tokenService: TokenService
+    private userService : UserService
   ) {}
 
   ngOnInit(): void {
     this.initLoginForm();
   }
 
-  async onSubmit() {
+  async onSubmit() : Promise<void> {
     if (this.loginForm.invalid) {
       return;
     }
@@ -39,14 +40,10 @@ export class LoginCardComponent implements OnInit {
     this.errorMessage = '';
     this.loadingSpinner = true;
     this.showStatusMessage = false;
-    this.fillCompletedForm();
+    this.loginFormSubmitted = this.loginForm.value;
 
     try {
-      const userTokenCreated = await this.userAPIService.signIn(this.loginFormSubmitted).toPromise();
-
-      if(userTokenCreated) {
-        this.tokenService.saveToken(userTokenCreated.token);
-      }
+      await this.userService.login(this.loginFormSubmitted);
 
       this.successMessage =
         "Heureux de te revoir " + this.loginFormSubmitted.pseudo +" !";
@@ -54,7 +51,9 @@ export class LoginCardComponent implements OnInit {
 
       //Timeout to let the user read the success message
       setTimeout(() => {
-        this.router.navigate(['/welcome']);
+        this.router.navigate(['/']).then(() => {
+          window.location.href = '/?refresh=true';
+        });
       }, 3000);
 
     } catch (error: any) {
@@ -65,10 +64,6 @@ export class LoginCardComponent implements OnInit {
     }
   }
 
-  private fillCompletedForm(): void {
-    this.loginFormSubmitted.pseudo = this.loginForm.controls['pseudo'].value;
-    this.loginFormSubmitted.password = this.loginForm.controls['password'].value;
-  }
 
   private initLoginForm(): void {
     this.loginForm = this.formBuilder.group({
