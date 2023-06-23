@@ -4,14 +4,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { LandpageComponent } from './pages/landpage/landpage.component';
 import {LoginComponent} from "./pages/login/login.component";
 import {RegisterComponent} from "./pages/register/register.component";
+import {MyFriendsComponent} from "./pages/profile/my-friends/my-friends.component";
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent }, //A CHANGER AVEC LOGIN PAGE
+  { path: 'login', component: LoginComponent },
 
-  { path: 'register', component: RegisterComponent }, //A CHANGER AVEC REGISTER PAGE
+  { path: 'register', component: RegisterComponent },
 
   { path: 'welcome', component: LandpageComponent },
-
+  {path: 'friends', component: MyFriendsComponent},
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
 ];
 @NgModule({

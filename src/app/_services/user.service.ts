@@ -13,7 +13,7 @@ import {ISignUp} from "../_interfaces/ISignUp";
 })
 export class UserService {
 
-  isCurrentUserOnline : boolean = false ;
+  //isCurrentUserOnline : boolean = false ;
   //currentUserPseudo : string | null = "test" ;
 
   constructor(private router : Router, private http: HttpClient, private tokenService : TokenService, private userAPIService : UserAPIService) { }
@@ -30,7 +30,10 @@ export class UserService {
       }
 
       this.tokenService.clearStorage();
-      this.isCurrentUserOnline = false;
+      // INUTILE ? this.isCurrentUserOnline = false;
+      this.router.navigate(['/']).then(() => {
+        window.location.href = '/?refresh=true';
+      });
 
     }catch (e) {
       return Promise.reject(e);
@@ -48,7 +51,7 @@ export class UserService {
       }
 
       this.tokenService.saveToken(userToken.token);
-      this.isCurrentUserOnline = true ;
+      //INUTILE ? this.isCurrentUserOnline = true ;
       //console.log("TEST : " + this.getCurrentUserPseudo())
 
     }catch (e) {
@@ -65,7 +68,7 @@ export class UserService {
         }
 
         this.tokenService.saveToken(userToken.token);
-        this.isCurrentUserOnline = true ;
+        // INUTILE ? this.isCurrentUserOnline = true ;
         //console.log("TEST : " + this.getCurrentUserPseudo())
 
       }catch (e) {

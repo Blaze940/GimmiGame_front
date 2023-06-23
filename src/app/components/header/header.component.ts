@@ -33,4 +33,9 @@ export class HeaderComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
+  logout() : void {
+    this.userService.logout();
+    this.setLoggedUser();
+  }
+
 }

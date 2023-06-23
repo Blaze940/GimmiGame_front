@@ -16,6 +16,13 @@ import {LoginComponent} from "./pages/login/login.component";
 import {RegisterComponent} from "./pages/register/register.component";
 import {TokenService} from "./_services/token.service";
 import {UserService} from "./_services/user.service";
+import { JwtModule } from '@auth0/angular-jwt';
+import {environment} from "../environments/environment";
+import { MyFriendsComponent } from './pages/profile/my-friends/my-friends.component';
+import { FriendRequestManagementComponent } from './components/friend-request-management/friend-request-management.component';
+import { FriendListComponent } from './components/friend-list/friend-list.component';
+
+
 
 
 @NgModule({
@@ -29,8 +36,22 @@ import {UserService} from "./_services/user.service";
     RegisterComponent,
     RegisterCardComponent,
     SpinnerComponent,
+    MyFriendsComponent,
+    MyFriendsComponent,
+    FriendRequestManagementComponent,
+    FriendListComponent,
   ],
-  imports: [CommonModule, BrowserModule, AppRoutingModule,ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, BrowserModule, AppRoutingModule,ReactiveFormsModule, HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('token');
+        },
+        allowedDomains: environment.domain_allowed,
+        disallowedRoutes: environment.routes_needingToken,
+      }
+    })
+  ],
   providers: [UserAPIService,TokenService,UserService],
   bootstrap: [AppComponent],
 })

@@ -10,9 +10,11 @@
         <li><a href="/">Accueil</a></li>
         <li><a>Profil</a></li>
         <li><a>Jeux et parties</a></li>
-        <li><a>Mes amis</a></li>
+        <li><a href="/friends">Mes amis</a></li> <!-- L'activer uniquement quand connecté -->
         <li><a>Paramètres</a></li>
         <li><a>A propos</a></li>
+        <li *ngIf="isLogged"><a (click)="logout()">Se déconnecter</a></li>
+        <li *ngIf="!isLogged"><a href="/login">Se connecter</a></li>
       </ul>
     </div>
     <div *ngIf="isLogged" class="avatar online">
@@ -32,11 +34,13 @@
     <a href="/" class="btn btn-ghost normal-case text-xl">GimmiGame</a>
   </div>
 
+  <div class="navbar-end space-x-4" >
 
-  <div class="navbar-end">
-<!--    <div class="dropdown">-->
-<!--      <button class="btn btn-ghost normal-case" >Theme</button>-->
-<!--    </div>-->
+    <div class="join">
+      <input class="input input-bordered join-item" placeholder="Chercher un jeu"/>
+      <button class="btn join-item rounded-r-full">Chercher</button>
+    </div>
+
 
     <label class="swap swap-rotate">
       <!-- this hidden checkbox controls the state -->

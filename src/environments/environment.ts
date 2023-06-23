@@ -4,8 +4,11 @@
 
 export const environment = {
   production: false,
+  domain: 'localhost:4200/',
+  domain_allowed: ['localhost:4200/'],
+  routes_needingToken: ['localhost:4200/profile/'],
   API_URL: 'http://localhost:3000/gimmiAPI/',
-  //BE CAREFUL : The slash at the end could be important
+  //BE CAREFUL : The slash at the end could be important for allowing all routes and subroutes
 };
 
 /*

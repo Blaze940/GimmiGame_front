@@ -1,7 +1,8 @@
-<!--<div data-theme="light">--> <!--Put the theme in light-->
-
 <div [attr.data-theme]="theme">
-  <app-header></app-header>
-  <router-outlet></router-outlet>
+  <div class="h-screen flex flex-col">
+    <app-header></app-header>
+    <div class="mt-header">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
-
