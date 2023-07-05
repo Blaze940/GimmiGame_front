@@ -1,9 +1,19 @@
-<div class="mockup-window border bg-base-300 flex-1 mx-4 my-4">
+<div class="mockup-window border bg-base-300 flex-1 mx-4 my-4" xmlns="http://www.w3.org/1999/html">
   <div class="flex flex-col h-full">
     <div class="flex items-center justify-between py-4 px-6 bg-base-200">
       <h2 class="text-xl font-bold">Demandes d'amis</h2>
-      <button class="btn btn-primary" >Nouvelle demande</button>
+      <form *ngIf="searchForm" [formGroup]="searchForm" (ngSubmit)="onSearchSubmit()">
+      <div >
+        <input type="text" formControlName="pseudoToSearch" class="input input-bordered join-item" placeholder="Chercher un ami"/>
+        <button class="btn btn-primary" type="submit" [disabled]="searchForm.invalid" >Envoyer demande</button>
+        <div *ngIf="searchForm.get('pseudoToSearch')?.invalid && (searchForm.get('pseudoToSearch')?.dirty || searchForm.get('pseudoToSearch')?.touched)" class="text-xs text-error">Le pseudo cherché contient entre 3 et 20 caractères</div>
+        <!-- <button class="btn join-item rounded-r-full">Chercher</button> -->
+      </div>
+      </form>
+
     </div>
+
+
     <div class="p-6 bg-base-100 flex-1">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <!-- Section "Invitations reçues" -->
@@ -79,4 +89,18 @@
       </div>
     </div>
   </div>
+
+  <div *ngIf="successMessage">
+    <app-alert type="sucess" message="{{successMessage}}"></app-alert>
+  </div>
+
+  <div *ngIf="errorMessage">
+    <app-alert type="error" message="{{errorMessage}}"></app-alert>
+  </div>
+
 </div>
+
+
+
+
+

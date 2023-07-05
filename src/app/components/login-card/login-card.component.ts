@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import {ISignUp} from "../../_interfaces/ISignUp";
-import {UserAPIService} from "../../_services/userAPI.service";
+import {UserAPIService} from "../../_services/callAPI/userAPI.service";
 import {TokenService} from "../../_services/token.service";
 import {ISignIn} from "../../_interfaces/ISignIn";
 import {IToken} from "../../_interfaces/IToken";

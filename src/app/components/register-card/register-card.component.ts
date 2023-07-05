@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {NavigationExtras, Router} from "@angular/router";
-import { UserAPIService } from "../../_services/userAPI.service";
+import { UserAPIService } from "../../_services/callAPI/userAPI.service";
 import { ISignUp } from "../../_interfaces/ISignUp";
 import { IToken } from "../../_interfaces/IToken";
 import { TokenService } from "../../_services/token.service";

@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {TokenService} from "./token.service";
-import {UserAPIService} from "./userAPI.service";
+import {UserAPIService} from "./callAPI/userAPI.service";
 import {IToken} from "../_interfaces/IToken";
 import {FormGroup} from "@angular/forms";
 import {ISignIn} from "../_interfaces/ISignIn";
 import {ISignUp} from "../_interfaces/ISignUp";
+import {IRequestUser} from "../_interfaces/IRequestUser";
 
 @Injectable({
   providedIn: 'root'
@@ -74,6 +75,19 @@ export class UserService {
       }catch (e) {
         return Promise.reject(e);
       }
+  }
+
+  async getUserByPseudo(pseudo: string): Promise<IRequestUser | null> {
+    try {
+      const user: IRequestUser | undefined = await this.userAPIService.getOneByPseudo(pseudo).toPromise();
+      if (user === undefined) {
+        return null;
+      }
+      return user;
+    } catch (e) {
+      return null;
+    }
+
   }
 
   getCurrentUserPseudo() : string | null {
