@@ -12,23 +12,26 @@ import {FriendRequestService} from "../../_services/friend-request.service";
 })
 export class FriendRequestManagementComponent implements OnInit {
   searchForm!: FormGroup;
-  arrayRequestsSent : IFriendRequest [] = [];
-  arrayRequestsReceived : IFriendRequest [] = [];
+  arrayRequestsSent : IFriendRequest [] | undefined = undefined;
+
+  owner! : string | null  ;
 
   //Tools
   loadingSpinner = false;
-  showAlert = false;
+  alertDuration : number = 4000;
   successMessage : string | null = null;
   errorMessage : string | null = null;
-  alertDuration : number = 4000;
+
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private friendRequestService: FriendRequestService
+    private friendRequestService: FriendRequestService,
+    private userService : UserService
   ) { }
 
   ngOnInit(): void {
+    this.initOwner();
     this.initSearchForm();
   }
 
@@ -44,13 +47,9 @@ export class FriendRequestManagementComponent implements OnInit {
     }
 
     const pseudoToFind = this.searchForm.value.pseudoToSearch;
-    this.loadingSpinner = true;
-    this.showAlert = false;
 
     try {
       await this.friendRequestService.createFriendRequest(pseudoToFind);
-
-      this.loadingSpinner = false;
       this.successMessage = "Demande d'ami envoyée à " + pseudoToFind;
 
       //Show it for 4 seconds and refresh the page
@@ -61,7 +60,6 @@ export class FriendRequestManagementComponent implements OnInit {
 
       this.searchForm.reset();
     } catch (e) {
-      this.loadingSpinner = false;
       this.errorMessage = "Erreur lors de l'envoi de la demande d'ami à " + pseudoToFind + " : L'utilisateur n'existe pas ou vous etes déja en attente d'une réponse de sa part. ";
 
       //Show it for 4 seconds and refresh the page
@@ -70,18 +68,18 @@ export class FriendRequestManagementComponent implements OnInit {
         this.refreshPage();
       }, this.alertDuration);
       this.searchForm.reset();
-
-    }finally {
-      console.log("Search form submitted");
-      this.loadingSpinner = false;
     }
 
   }
 
-  refreshPage() {
-    this.router.navigateByUrl(this.router.url, {skipLocationChange: true}).then(() => {
-      this.router.navigate([this.router.url]);
-    });
+  private refreshPage() {
+    location.reload();
   }
+
+  initOwner(){
+    this.owner = this.userService.getCurrentUserPseudo();
+  }
+
+
 
 }
