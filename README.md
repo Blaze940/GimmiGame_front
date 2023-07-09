@@ -1,3 +1,7 @@
+# Prerequisites (local mode only)
+
+Run the server available at `https://github.com/GimmiGame/GimmiBack` and follow the instructions in the README.md file.
+
 # GimmiFront
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.5.
