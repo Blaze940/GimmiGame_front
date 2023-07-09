@@ -13,7 +13,7 @@ export class FriendRequestService {
 
   constructor(private router : Router, private http: HttpClient, private userService : UserService, private friendRequestAPIService : FriendRequestAPIService  ) { }
 
-  async createFriendRequest(receiverPseudo: string) :Promise<Object | undefined> {
+  async createFriendRequest(receiverPseudo: string) :Promise<void> {
     let senderPseudo: string | null;
 
     try {
@@ -24,7 +24,6 @@ export class FriendRequestService {
 
     try {
       const response = await this.friendRequestAPIService.createFriendRequest(senderPseudo, receiverPseudo).toPromise();
-      return Promise.resolve(response);
     } catch (e) {
       return Promise.reject(e);
     }
@@ -40,7 +39,7 @@ export class FriendRequestService {
     }
   }
 
-  async getAllFrom(pseudo: string) : Promise<IFriendRequest[] | undefined> {
+  async getAllFrom(pseudo: string | null ) : Promise<IFriendRequest[] | undefined> {
     try{
       const response : IFriendRequest[] | undefined = await this.friendRequestAPIService.getAllFrom(pseudo).toPromise();
       return Promise.resolve(response);
@@ -79,32 +78,26 @@ export class FriendRequestService {
 
   async acceptFriendRequest(_id: string): Promise<void> {
     try {
-      console.log("Accepting friend request with ID:", _id);
       const response = await this.friendRequestAPIService.acceptFriendRequest(_id).toPromise();
-      console.log("Friend request accepted:", response);
       return Promise.resolve(response);
     } catch (e) {
-      console.error("Error accepting friend request:", e);
       return Promise.reject(e);
     }
   }
 
   async refuseFriendRequest(_id: string): Promise<void> {
     try {
-      console.log("Refusing friend request with ID:", _id);
       const response = await this.friendRequestAPIService.refuseFriendRequest(_id).toPromise();
-      console.log("Friend request refused:", response);
       return Promise.resolve(response);
     } catch (e) {
-      console.error("Error refusing friend request:", e);
       return Promise.reject(e);
     }
   }
 
 
-  async deleteFriendRequest(_id: string) : Promise<string | undefined> {
+  async deleteFriendRequest(_id: string) : Promise<void> {
     try{
-      const response : string | undefined = await this.friendRequestAPIService.deleteFriendRequest(_id).toPromise();
+      const response = await this.friendRequestAPIService.deleteFriendRequest(_id).toPromise();
       return Promise.resolve(response);
     } catch (e) {
       return Promise.reject(e);
@@ -124,7 +117,7 @@ export class FriendRequestService {
     }
   }
 
-  async getAllPendingFrom(pseudo: string) : Promise<IFriendRequest[] | undefined> {
+  async getAllPendingFrom(pseudo: string | null) : Promise<IFriendRequest[] | undefined> {
     try{
       const response : IFriendRequest[] | undefined = await this.getAllFrom(pseudo);
       if(response === undefined) {

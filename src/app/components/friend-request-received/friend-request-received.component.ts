@@ -17,7 +17,7 @@ export class FriendRequestReceivedComponent implements OnInit {
 
   //Tools
   loadingSpinner = false;
-  alertDuration : number = 4000;
+  alertDuration : number = 3000;
   successMessage : string | null = null;
   errorMessage : string | null = null;
 
@@ -30,13 +30,12 @@ export class FriendRequestReceivedComponent implements OnInit {
     this.initFriendRequestReceived();
   }
 
-
   async acceptInvitation(_id: string) {
     //call api , notify, refresh
     try{
-      const res = await this.friendRequestService.acceptFriendRequest(_id);
-      console.log(res)
-      this.successMessage = "Vous êtes maintenant ami avec cet utilisateur "
+      await this.friendRequestService.acceptFriendRequest(_id);
+
+      this.successMessage = "Vous êtes maintenant ami avec cet utilisateur"
 
       //alert
       setTimeout(() => {
@@ -54,14 +53,14 @@ export class FriendRequestReceivedComponent implements OnInit {
         this.refreshPage();
       }, this.alertDuration);
     }
-
   }
 
-  rejectInvitation(_id: string) {
+  async rejectInvitation(_id: string) {
     //call api , notify, refresh
     try{
-      this.friendRequestService.refuseFriendRequest(_id)
-      this.successMessage = "Vous avez refusé cette demande d'ami. ";
+      await this.friendRequestService.refuseFriendRequest(_id)
+
+      this.successMessage = "Vous avez refusé cette demande d'ami";
 
       //alert and refresh
       setTimeout(() => {
@@ -84,8 +83,8 @@ export class FriendRequestReceivedComponent implements OnInit {
     this.loadingSpinner = true;
     try{
       this.friendRequestsReceived = await this.friendRequestService.getAllPendingTo(this.owner)
-    }catch (e){
-      this.errorMessage = "Erreur lors de la récupération des demandes reçues. Veuillez réessayer plus tard.";
+    }catch (e : any){
+      this.errorMessage = "Erreur lors de la récupération des demandes reçues. Veuillez réessayer plus tard.\n"
     }
     this.loadingSpinner = false;
   }

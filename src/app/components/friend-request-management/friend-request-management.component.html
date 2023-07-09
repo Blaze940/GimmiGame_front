@@ -1,5 +1,6 @@
 <div class="mockup-window border bg-base-300 flex-1 mx-4 my-4" xmlns="http://www.w3.org/1999/html">
   <div class="flex flex-col h-full">
+    <!-- Partie "Rechercher un ami" -->
     <div class="flex items-center justify-between py-4 px-6 bg-base-200">
       <h2 class="text-xl font-bold">Demandes d'amis</h2>
       <form *ngIf="searchForm" [formGroup]="searchForm" (ngSubmit)="onSearchSubmit()">
@@ -7,92 +8,26 @@
         <input type="text" formControlName="pseudoToSearch" class="input input-bordered join-item" placeholder="Chercher un ami"/>
         <button class="btn btn-primary" type="submit" [disabled]="searchForm.invalid" >Envoyer demande</button>
         <div *ngIf="searchForm.get('pseudoToSearch')?.invalid && (searchForm.get('pseudoToSearch')?.dirty || searchForm.get('pseudoToSearch')?.touched)" class="text-xs text-error">Le pseudo cherché contient entre 3 et 20 caractères</div>
-        <!-- <button class="btn join-item rounded-r-full">Chercher</button> -->
       </div>
       </form>
-
     </div>
 
 
     <div class="p-6 bg-base-100 flex-1">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
         <!-- Section "Invitations reçues" -->
-<!--        <div class="border rounded p-4">-->
-<!--          <h3 class="text-lg font-bold ">Invitations reçues</h3>-->
-<!--          <div class="mt-4">-->
-<!--            &lt;!&ndash; Liste des invitations reçues &ndash;&gt;-->
-<!--            <ul>-->
-<!--              <li class="py-2">-->
-<!--                <div class="flex justify-between items-center">-->
-<!--                  <span>Invitation 1</span>-->
-<!--                  <div>-->
-<!--                    <button class="btn btn-primary mr-2">Accepter</button>-->
-<!--                    <button class="btn ">Refuser</button>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </li>-->
-<!--              <li class="py-2">-->
-<!--                <div class="flex justify-between items-center">-->
-<!--                  <span>Invitation 2</span>-->
-<!--                  <div>-->
-<!--                    <button class="btn btn-primary mr-2">Accepter</button>-->
-<!--                    <button class="btn ">Refuser</button>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </li>-->
-<!--              <li class="py-2">-->
-<!--                <div class="flex justify-between items-center">-->
-<!--                  <span>Invitation 3</span>-->
-<!--                  <div>-->
-<!--                    <button class="btn btn-primary mr-2">Accepter</button>-->
-<!--                    <button class="btn ">Refuser</button>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </li>-->
-<!--            </ul>-->
-<!--          </div>-->
-<!--        </div>-->
         <app-friend-request-received [owner]="owner"></app-friend-request-received>
 
         <!-- Section "Invitations envoyées" -->
-        <div class="border border-primary rounded p-4">
-          <h3 class="text-lg font-bold ">Invitations envoyées</h3>
-          <div class="mt-4">
-            <!-- Liste des invitations envoyées -->
-            <ul>
-              <li class="py-2">
-                <div class="flex justify-between items-center">
-                  <span>Invitation 1</span>
-                  <div>
-                    <button class="btn btn-primary mr-2">Annuler</button>
-                  </div>
-                </div>
-              </li>
-              <li class="py-2">
-                <div class="flex justify-between items-center">
-                  <span>Invitation 2</span>
-                  <div>
-                    <button class="btn btn-primary mr-2">Annuler</button>
-                  </div>
-                </div>
-              </li>
-              <li class="py-2">
-                <div class="flex justify-between items-center">
-                  <span>Invitation 3</span>
-                  <div>
-                    <button class="btn btn-primary mr-2">Annuler</button>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <app-friend-request-sent [owner]="owner"></app-friend-request-sent>
+
       </div>
     </div>
   </div>
 
   <div *ngIf="successMessage">
-    <app-alert type="sucess" message="{{successMessage}}"></app-alert>
+    <app-alert type="success" message="{{successMessage}}"></app-alert>
   </div>
 
   <div *ngIf="errorMessage">

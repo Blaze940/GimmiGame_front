@@ -23,6 +23,7 @@ import { FriendRequestManagementComponent } from './components/friend-request-ma
 import { FriendListComponent } from './components/friend-list/friend-list.component';
 import { AlertComponent } from './components/_tools/alert/alert.component';
 import { FriendRequestReceivedComponent } from './components/friend-request-received/friend-request-received.component';
+import { FriendRequestSentComponent } from './components/friend-request-sent/friend-request-sent.component';
 
 
 
@@ -44,6 +45,7 @@ import { FriendRequestReceivedComponent } from './components/friend-request-rece
     FriendListComponent,
     AlertComponent,
     FriendRequestReceivedComponent,
+    FriendRequestSentComponent,
   ],
   imports: [CommonModule, BrowserModule, AppRoutingModule,ReactiveFormsModule, HttpClientModule,
     JwtModule.forRoot({

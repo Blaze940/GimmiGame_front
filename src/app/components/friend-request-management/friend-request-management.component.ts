@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {IFriendRequest} from "../../_interfaces/IFriendRequest";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../_services/user.service";
@@ -14,11 +14,11 @@ export class FriendRequestManagementComponent implements OnInit {
   searchForm!: FormGroup;
   arrayRequestsSent : IFriendRequest [] | undefined = undefined;
 
-  owner! : string | null  ;
+  @Input() owner! : string | null  ;
 
   //Tools
   loadingSpinner = false;
-  alertDuration : number = 4000;
+  alertDuration : number = 3000;
   successMessage : string | null = null;
   errorMessage : string | null = null;
 
