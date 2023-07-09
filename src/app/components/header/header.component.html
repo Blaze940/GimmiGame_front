@@ -6,16 +6,30 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
         </svg>
       </label>
-      <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-        <li><a href="/">Accueil</a></li>
-        <li><a>Profil</a></li>
-        <li><a>Jeux et parties</a></li>
-        <li><a href="/friends">Mes amis</a></li> <!-- L'activer uniquement quand connecté -->
-        <li><a>Paramètres</a></li>
-        <li><a>A propos</a></li>
-        <li *ngIf="isLogged"><a (click)="logout()">Se déconnecter</a></li>
-        <li *ngIf="!isLogged"><a href="/login">Se connecter</a></li>
-      </ul>
+
+      <ng-container *ngIf="isLogged">
+        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+          <!-- Elements du menu pour un utilisateur connecté -->
+          <li><a href="/">Accueil</a></li>
+          <li><a>Profil</a></li>
+          <li><a>Jeux et parties</a></li>
+          <li><a href="/friends">Mes amis</a></li>
+          <li><a>Paramètres</a></li>
+          <li><a>A propos</a></li>
+          <li><a (click)="logout()">Se déconnecter</a></li>
+        </ul>
+      </ng-container>
+
+      <ng-container *ngIf="!isLogged">
+        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+          <!-- Elements du menu pour un utilisateur non connecté -->
+          <li><a href="/">Accueil</a></li>
+          <li><a>Paramètres</a></li>
+          <li><a>A propos</a></li>
+          <li><a href="/login">Se connecter</a></li>
+        </ul>
+      </ng-container>
+
     </div>
     <div *ngIf="isLogged" class="avatar online">
       <div class="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
