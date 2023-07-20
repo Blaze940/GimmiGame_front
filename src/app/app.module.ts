@@ -24,6 +24,9 @@ import { FriendListComponent } from './components/friend-list/friend-list.compon
 import { AlertComponent } from './components/_tools/alert/alert.component';
 import { FriendRequestReceivedComponent } from './components/friend-request-received/friend-request-received.component';
 import { FriendRequestSentComponent } from './components/friend-request-sent/friend-request-sent.component';
+import { MyGameRoomsComponent } from './pages/profile/my-game-rooms/my-game-rooms.component';
+import { GameRoomListComponent } from './components/game-room-list/game-room-list.component';
+import { GameRoomCreateComponent } from './components/game-room-create/game-room-create.component';
 
 
 
@@ -46,6 +49,9 @@ import { FriendRequestSentComponent } from './components/friend-request-sent/fri
     AlertComponent,
     FriendRequestReceivedComponent,
     FriendRequestSentComponent,
+    MyGameRoomsComponent,
+    GameRoomListComponent,
+    GameRoomCreateComponent,
   ],
   imports: [CommonModule, BrowserModule, AppRoutingModule,ReactiveFormsModule, HttpClientModule,
     JwtModule.forRoot({

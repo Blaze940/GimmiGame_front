@@ -20,7 +20,7 @@ export class LoginCardComponent implements OnInit {
   successMessage = '';
 
   loadingSpinner = false;
-  showStatusMessage = false;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,7 +39,6 @@ export class LoginCardComponent implements OnInit {
 
     this.errorMessage = '';
     this.loadingSpinner = true;
-    this.showStatusMessage = false;
     this.loginFormSubmitted = this.loginForm.value;
 
     try {
@@ -58,7 +57,6 @@ export class LoginCardComponent implements OnInit {
 
     } catch (error: any) {
       this.errorMessage = "Pseudo ou mot de passe incorrect.";
-      this.showStatusMessage = true;
     } finally {
       this.loadingSpinner = false;
     }

@@ -19,7 +19,6 @@ export class RegisterCardComponent implements OnInit {
   successMessage = '';
 
   loadingSpinner = false;
-  showStatusMessage = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,7 +37,6 @@ export class RegisterCardComponent implements OnInit {
 
     this.errorMessage = '';
     this.loadingSpinner = true;
-    this.showStatusMessage = false;
     this.registrationFormSubmitted = this.registrationForm.value;
 
     try {
@@ -57,7 +55,6 @@ export class RegisterCardComponent implements OnInit {
 
     } catch (error: any) {
       this.errorMessage = "Ce pseudo ou cette adresse email existe déjà.";
-      this.showStatusMessage = true;
     } finally {
       this.loadingSpinner = false;
     }
