@@ -13,9 +13,14 @@ import {IRequestUser} from "../../_interfaces/IRequestUser";
 })
 export class GameRoomCreateComponent implements OnInit {
   @Input() owner! : string | null ;
-  currentUser! : IRequestUser | null;
+
   gameRoomForm! : FormGroup;
-  gameRoomFormSubmitted! : ICreateGameRoom
+  gameRoomFormSubmitted : ICreateGameRoom = {
+    roomName : '',
+    currentGame : '',
+    creator : '',
+    maxPlayers : 2
+  }
 
   //Tools
   loadingSpinner = false;
@@ -31,7 +36,6 @@ export class GameRoomCreateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.initCurrentUser()
     this.initGameRoomForm()
   }
 
@@ -42,7 +46,11 @@ export class GameRoomCreateComponent implements OnInit {
 
     this.errorMessage = '';
     this.loadingSpinner = true;
-    this.gameRoomFormSubmitted = this.gameRoomForm.value;
+    this.gameRoomFormSubmitted = {
+      ...this.gameRoomForm.value,
+      creator : this.userService.getCurrentUserPseudo(),
+    };
+    console.log("Submitted" + JSON.stringify(this.gameRoomFormSubmitted))
 
     try {
       await this.gameRoomService.createGameRoom(this.gameRoomFormSubmitted);
@@ -51,22 +59,14 @@ export class GameRoomCreateComponent implements OnInit {
         "Salle de jeu créée avec succès !";
       this.gameRoomForm.reset();
 
-      //Timeout to let the user read the success message
-      setTimeout(() => {
-        this.router.navigate(['/']).then(() => {
-          window.location.href = '/?refresh=true';
-        });
-      }, 3000);
-
     } catch (error: any) {
       this.errorMessage = "Erreur lors de la création de la salle de jeu. Veuillez réessayer plus tard.";
     }
 
     this.loadingSpinner = false;
-    setTimeout(() => {
-      this.successMessage = null;
-      this.errorMessage = null;
-    }, this.alertDuration);
+    // setTimeout(() => {
+    //   this.refreshPage();
+    // }, this.alertDuration);
   }
 
   private initGameRoomForm() {
@@ -76,23 +76,8 @@ export class GameRoomCreateComponent implements OnInit {
       maxPlayers: [2, [Validators.required, Validators.min(2), Validators.max(20)]],
     })
 
-    this.gameRoomFormSubmitted ={
-      roomName : '',
-      currentGame : '',
-      creator : this.currentUser?.pseudo.toString() || '',
-      maxPlayers : 2
-    }
   }
 
-  private async initCurrentUser() {
-    this.loadingSpinner = true;
-    try{
-      this.currentUser = await this.userService.getUserByPseudo(this.owner)
-    }catch(e : any){
-      this.errorMessage = "Erreur lors de la récupération de l'utilisateur. Veuillez réessayer plus tard."
-    }
-    this.loadingSpinner = false;
-  }
   private refreshPage() {
     location.reload();
   }

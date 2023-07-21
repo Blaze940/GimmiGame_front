@@ -22,8 +22,8 @@
   </div>
   <div class="flex-1 mx-4 my-4">
     <app-game-room-list  *ngIf="currentSection === 'gameroomsList'" [owner]="currentUserPseudo" ></app-game-room-list>
-   <app-game-room-invitation-management *ngIf="currentSection === 'invitations'" [owner]="currentUserPseudo" ></app-game-room-invitation-management>
-    <!-- <app-ranking *ngIf="currentSection === 'ranking'"></app-ranking> -->
+    <app-game-room-invitation-management *ngIf="currentSection === 'invitations'" [owner]="currentUserPseudo" ></app-game-room-invitation-management>
+    <app-game-room-create *ngIf="currentSection === 'createRoom'"></app-game-room-create>
   </div>
 </div>
 
