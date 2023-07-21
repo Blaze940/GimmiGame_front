@@ -28,6 +28,8 @@ import { MyGameRoomsComponent } from './pages/profile/my-game-rooms/my-game-room
 import { GameRoomListComponent } from './components/game-room-list/game-room-list.component';
 import { GameRoomCreateComponent } from './components/game-room-create/game-room-create.component';
 import { GameRoomInvitationManagementComponent } from './components/game-room-invitation-management/game-room-invitation-management.component';
+import { GameRoomInvitationReceivedComponent } from './components/game-room-invitation-received/game-room-invitation-received.component';
+import { GameRoomInvitationSentComponent } from './components/game-room-invitation-sent/game-room-invitation-sent.component';
 
 
 
@@ -54,6 +56,8 @@ import { GameRoomInvitationManagementComponent } from './components/game-room-in
     GameRoomListComponent,
     GameRoomCreateComponent,
     GameRoomInvitationManagementComponent,
+    GameRoomInvitationReceivedComponent,
+    GameRoomInvitationSentComponent,
   ],
   imports: [CommonModule, BrowserModule, AppRoutingModule,ReactiveFormsModule, HttpClientModule,
     JwtModule.forRoot({

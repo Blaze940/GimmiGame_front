@@ -116,7 +116,7 @@ export class GameRoomInvitationService {
     }
   }
 
-  async getAllPendingSentTo(userId: string) : Promise<IGameRoomInvitation[] | undefined> {
+  async getAllPendingSentTo(userId: string | null): Promise<IGameRoomInvitation[] | undefined> {
     let allRoomsInvitation: IGameRoomInvitation[] | undefined = []
     try {
       allRoomsInvitation = await this.getAll();
@@ -138,7 +138,7 @@ export class GameRoomInvitationService {
     return Promise.resolve(allSentTo);
   }
 
-  async getAllPendingSentBy(userId: string) : Promise<IGameRoomInvitation[] | undefined> {
+  async getAllPendingSentBy(userId: string | null): Promise<IGameRoomInvitation[] | undefined> {
     let allRoomsInvitation: IGameRoomInvitation[] | undefined = []
     try {
       allRoomsInvitation = await this.getAll();
