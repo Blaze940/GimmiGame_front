@@ -77,7 +77,7 @@ export class UserService {
       }
   }
 
-  async getUserByPseudo(pseudo: string): Promise<IRequestUser | null> {
+  async getUserByPseudo(pseudo: string | null): Promise<IRequestUser | null> {
     try {
       const user: IRequestUser | undefined = await this.userAPIService.getOneByPseudo(pseudo).toPromise();
       if (user === undefined) {
@@ -94,6 +94,14 @@ export class UserService {
     const userToken : string | null = this.tokenService.getCurrentUserToken() ;
     if(userToken !== null) {
       return this.tokenService.extractPseudoFromPayload(userToken);
+    }
+    return null;
+  }
+
+  getCurrentUserId() : string | null {
+    const userToken : string | null = this.tokenService.getCurrentUserToken() ;
+    if(userToken !== null) {
+      return this.tokenService.extractSubjectFromPayload(userToken)
     }
     return null;
   }

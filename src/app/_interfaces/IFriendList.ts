@@ -1,4 +1,3 @@
-
 //Type of values that we get from the database after populate
 import {IUser} from "./IUser";
 

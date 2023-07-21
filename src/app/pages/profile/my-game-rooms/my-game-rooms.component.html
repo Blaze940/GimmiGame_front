@@ -1,0 +1,29 @@
+<!--<div class="flex h-screen overflow-hidden" [attr.data-theme]="currentTheme">-->
+<!--  <button class="btn btn-primary" (click)="getAllGameRoomInvitations()">All invit</button>-->
+<!--  <button class="btn btn-primary" (click)="getAllGameRooms()">All gamerooms</button>-->
+<!--  <button class="btn btn-primary" (click)="getAllMyGameRooms()">All my gamerooms</button>-->
+<!--  <button class="btn btn-primary" (click)="getAllGameRoomInvitationsSentToUser()">All invit sent to user</button>-->
+<!--  <button class="btn btn-primary" (click)="getAllGameRoomInvitationsSentByUser()">All invit sent by user</button>-->
+<!--</div>-->
+
+<div class="flex h-screen overflow-hidden" [attr.data-theme]="currentTheme">
+  <div class="w-1/9 flex flex-col justify-center mx-4">
+    <ul class="menu bg-base-200 w-56 rounded-box my-4">
+      <li>
+        <a class="py-2 px-4" [ngClass]="{'active': currentSection === 'gameroomsList'}" (click)="currentSection = 'gameroomsList'">Mes rooms</a>
+      </li>
+      <li>
+        <a class="py-2 px-4" [ngClass]="{'active': currentSection === 'invitations'}" (click)="currentSection = 'invitations'">Invitations</a>
+      </li>
+      <li>
+        <a class="py-2 px-4" [ngClass]="{'active': currentSection === 'createRoom'}" (click)="currentSection = 'createRoom'">Créer une room</a>
+      </li>
+    </ul>
+  </div>
+  <div class="flex-1 mx-4 my-4">
+    <app-game-room-list  *ngIf="currentSection === 'gameroomsList'" [owner]="currentUserPseudo" ></app-game-room-list>
+    <app-game-room-invitation-management *ngIf="currentSection === 'invitations'" [owner]="currentUserPseudo" ></app-game-room-invitation-management>
+    <app-game-room-create *ngIf="currentSection === 'createRoom'"></app-game-room-create>
+  </div>
+</div>
+

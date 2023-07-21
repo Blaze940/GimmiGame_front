@@ -38,4 +38,14 @@ export class TokenService {
     return pseudo;
   }
 
+  extractSubjectFromPayload(token: string): string | null {
+    const decodedToken = this.jwtHelper.decodeToken(token) as { subject: string };
+    if (!decodedToken) {
+      return null;
+    }
+    const subject = decodedToken.subject;
+    return subject;
+  }
+
+
 }

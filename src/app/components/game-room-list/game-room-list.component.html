@@ -1,0 +1,93 @@
+
+<div class="mockup-window border bg-base-300 flex-1 mx-4 my-4">
+  <div class="flex flex-col h-full">
+    <div class="flex items-center justify-between py-4 px-6 bg-base-200">
+      <h2 class="text-xl font-bold">Liste des rooms ({{gameRoomsNumber}})</h2>
+    </div>
+
+    <div class="p-6 bg-base-100 flex-1 " *ngIf="gameRoomsNumber > 0">
+      <div class="overflow-x-auto">
+        <table class="table w-full">
+          <!-- head -->
+          <thead>
+          <tr>
+            <th>Room</th>
+            <th>En cours</th>
+            <th>Joueurs</th>
+            <th>Action</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let gameRoom of gameRooms">
+            <td>
+              <div class="flex items-center space-x-3">
+                <div *ngIf="gameRoom.players.length !== 0" class="avatar online">
+                  <div class="mask mask-squircle w-12 h-12">
+                    <img src="assets/images/room.jpg" alt="Avatar Tailwind CSS Component" />
+                  </div>
+                </div>
+                <div *ngIf="gameRoom.players.length === 0" class="avatar offline">
+                  <div class="mask mask-squircle w-12 h-12">
+                    <img src="assets/images/room.jpg" alt="Avatar Tailwind CSS Component" />
+                  </div>
+                </div>
+                <div>
+                  <div class="font-bold">{{ gameRoom.roomName }}</div>
+                  <div class="text-sm opacity-50">{{gameRoom.creator.pseudo}}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="text-green-500" *ngIf="gameRoom.currentGame">{{gameRoom.currentGame}}</span>
+            </td>
+            <td>
+              <span class="text-base-500" >{{gameRoom.players.length}}/{{gameRoom.maxPlayers}}</span>
+            </td>
+            <td>
+              <ng-container *ngIf="gameRoom.creator.pseudo === owner && !isOwnerIncludedInPlayers(gameRoom); else elseBlock">
+                <button class="btn btn-secondary" (click)="joinGameRoom(gameRoom.roomName)">Rejoindre</button>
+              </ng-container>
+              <ng-template #elseBlock>
+                <!--TODO: ENTER BUTTON REDIRECT TOWARDS GAMEROOM COMPONENT-->
+                <button class="btn btn-primary">Entrer</button>
+              </ng-template>
+            </td>
+            <td>
+              <button class="btn btn-ghost" (click)="exitGameRoom(gameRoom.roomName)">Quitter</button>
+            </td>
+          </tr>
+          </tbody>
+          <!-- foot -->
+          <tfoot>
+          <tr>
+            <th>Room</th>
+            <th>En cours</th>
+            <th>Joueurs</th>
+            <th>Action</th>
+            <th></th>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="loadingSpinner" class="spinner-container">
+      <app-spinner></app-spinner>
+    </div>
+
+    <div *ngIf="gameRoomsNumber === 0" class="flex-1 flex items-center justify-center">
+      <div class="flex flex-col items-center mb-4">
+        <div class="text">Rejoignez ou creez des rooms pour les voir ici</div>
+      </div>
+    </div>
+
+    <div *ngIf="successMessage">
+      <app-alert type="success" message="{{successMessage}}"></app-alert>
+    </div>
+
+    <div *ngIf="errorMessage">
+      <app-alert type="error" message="{{errorMessage}}"></app-alert>
+    </div>
+  </div>
+</div>

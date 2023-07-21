@@ -32,7 +32,7 @@ export class UserAPIService {
     return this.http.get<IUser[]>(this.base_URL+'all');
   }
 
-  getOneByPseudo(pseudo: string): Observable<IUser> {
+  getOneByPseudo(pseudo: string | null): Observable<IUser> {
     return this.http.get<IUser>(this.base_URL + 'pseudo/' + pseudo);
   }
 

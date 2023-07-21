@@ -1,10 +1,13 @@
 export interface IGameRoom {
-    _id: string;
     roomName: string;
-    game: string;
-    players: string[];
-    creator: string;
-    gameStarted: boolean;
-    gameTerminated: boolean;
-    gameSaved: boolean;
+    currentGame: string;
+    players: {
+        _id: string;
+        pseudo: string;
+    }[];
+    creator: {
+        _id: string;
+        pseudo: string;
+    }
+    maxPlayers: number;
 }
