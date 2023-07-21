@@ -1,0 +1,52 @@
+<div class="mockup-window border bg-base-300 flex-1 mx-4 my-4">
+  <div class="flex flex-col h-full">
+    <!-- Partie "Rechercher un ami" -->
+    <div class="flex items-center justify-between py-4 px-6 bg-base-200">
+      <h2 class="text-xl font-bold">Invitations de room</h2>
+      <form *ngIf="invitationForm" [formGroup]="invitationForm" (ngSubmit)="sentInvitation()">
+        <div class="join">
+          <div class="flex items-center"> <!-- Ajouter cette classe CSS -->
+            <div>
+              <div>
+                <select formControlName="friendToInvite" class="select select-bordered join-item">
+                  <option value="">Qui ?</option>
+                  <option *ngFor="let friend of myFriends?.friends" [value]="friend.pseudo">{{ friend.pseudo }}</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <select formControlName="roomName" class="select select-bordered join-item">
+                <option value="">Où ?</option>
+                <option *ngFor="let gameRoom of myGameRooms" [value]="gameRoom.roomName">{{ gameRoom.roomName }}</option>
+              </select>
+            </div>
+            <div>
+              <button class="btn join-item" type="submit" [disabled]="invitationForm.invalid">Envoyer invitation</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="p-6 bg-base-100 flex-1">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+        <!-- Section "Invitations reçues" -->
+        <app-friend-request-received [owner]="owner"></app-friend-request-received>
+
+        <!-- Section "Invitations envoyées" -->
+        <app-friend-request-sent [owner]="owner"></app-friend-request-sent>
+
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="successMessage">
+    <app-alert type="success" message="{{successMessage}}"></app-alert>
+  </div>
+
+  <div *ngIf="errorMessage">
+    <app-alert type="error" message="{{errorMessage}}"></app-alert>
+  </div>
+
+</div>

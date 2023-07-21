@@ -27,6 +27,7 @@ import { FriendRequestSentComponent } from './components/friend-request-sent/fri
 import { MyGameRoomsComponent } from './pages/profile/my-game-rooms/my-game-rooms.component';
 import { GameRoomListComponent } from './components/game-room-list/game-room-list.component';
 import { GameRoomCreateComponent } from './components/game-room-create/game-room-create.component';
+import { GameRoomInvitationManagementComponent } from './components/game-room-invitation-management/game-room-invitation-management.component';
 
 
 
@@ -52,6 +53,7 @@ import { GameRoomCreateComponent } from './components/game-room-create/game-room
     MyGameRoomsComponent,
     GameRoomListComponent,
     GameRoomCreateComponent,
+    GameRoomInvitationManagementComponent,
   ],
   imports: [CommonModule, BrowserModule, AppRoutingModule,ReactiveFormsModule, HttpClientModule,
     JwtModule.forRoot({

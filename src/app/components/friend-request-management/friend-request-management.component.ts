@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../_services/user.service";
 import {Router} from "@angular/router";
 import {FriendRequestService} from "../../_services/friend-request.service";
+import {IGameRoom} from "../../_interfaces/IGameRoom";
 
 @Component({
   selector: 'app-friend-request-management',
@@ -12,8 +13,6 @@ import {FriendRequestService} from "../../_services/friend-request.service";
 })
 export class FriendRequestManagementComponent implements OnInit {
   searchForm!: FormGroup;
-  arrayRequestsSent : IFriendRequest [] | undefined = undefined;
-
   @Input() owner! : string | null  ;
 
   //Tools
