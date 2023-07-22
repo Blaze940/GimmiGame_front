@@ -1,0 +1,52 @@
+<div class="mockup-window border bg-base-300 p-4 flex flex-col h-full">
+  <div class="overflow-x-auto">
+    <table class="table w-full border border-gray-300">
+      <!-- head -->
+      <thead>
+      <tr class="bg-gray-100">
+        <th>Rang</th>
+        <th>Pseudo</th>
+        <th>Score</th>
+        <th>Jeu Préféré</th>
+        <th>Description</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Player row for the first player (with special styling) -->
+      <tr>
+        <td class="bg-primary text-white">1</td>
+        <td class="bg-primary text-white">{{ players[0].pseudo }}</td>
+        <td class="bg-primary text-white">{{ players[0].score }}</td>
+        <td class="bg-primary text-white">{{ players[0].favoriteGame }}</td>
+        <td class="bg-primary text-white">{{ players[0].description }}</td>
+        <td class="bg-primary text-white">
+          <button class="btn btn-ghost btn-xs">details</button>
+        </td>
+      </tr>
+      <!-- Other player rows -->
+      <tr *ngFor="let player of players.slice(1); let i = index">
+        <td>{{ i + 2 }}</td>
+        <td>{{ player.pseudo }}</td>
+        <td>{{ player.score }}</td>
+        <td>{{ player.favoriteGame }}</td>
+        <td>{{ player.description }}</td>
+        <td>
+          <button class="btn btn-ghost btn-xs">details</button>
+        </td>
+      </tr>
+      </tbody>
+      <!-- foot -->
+      <tfoot>
+      <tr>
+        <th>Rang</th>
+        <th>Pseudo</th>
+        <th>Score</th>
+        <th>Jeu Préféré</th>
+        <th>Description</th>
+        <th></th>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

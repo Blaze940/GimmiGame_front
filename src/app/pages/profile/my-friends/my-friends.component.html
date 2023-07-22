@@ -43,6 +43,6 @@
   <div class="flex-1 mx-4 my-4">
     <app-friend-list  *ngIf="currentSection === 'friendlist'" [owner]="currentUserPseudo" ></app-friend-list>
     <app-friend-request-management *ngIf="currentSection === 'invitations'" [owner]="currentUserPseudo" ></app-friend-request-management>
-    <!-- <app-ranking *ngIf="currentSection === 'ranking'"></app-ranking> -->
+     <app-friend-ranking *ngIf="currentSection === 'ranking'"></app-friend-ranking>
   </div>
 </div>

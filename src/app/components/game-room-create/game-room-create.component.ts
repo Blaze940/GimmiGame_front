@@ -57,16 +57,18 @@ export class GameRoomCreateComponent implements OnInit {
 
       this.successMessage =
         "Salle de jeu créée avec succès !";
-      this.gameRoomForm.reset();
 
     } catch (error: any) {
       this.errorMessage = "Erreur lors de la création de la salle de jeu. Veuillez réessayer plus tard.";
     }
 
+    this.gameRoomForm.reset();
     this.loadingSpinner = false;
-    // setTimeout(() => {
-    //   this.refreshPage();
-    // }, this.alertDuration);
+
+    setTimeout(() => {
+      this.successMessage = null;
+      this.errorMessage = null;
+    }, this.alertDuration);
   }
 
   private initGameRoomForm() {
