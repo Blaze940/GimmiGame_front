@@ -52,8 +52,8 @@
         <p class="text-lg font-bold">Notifications </p>
         <ul class="mt-2">
           <!-- Insérer ici les notifications du jeu -->
-          <li class="text-base">Gagnant : Joueur1</li>
-          <li class="text-base">Tour suivant...</li>
+          <li class="text-base text-sm font-bold text-green-500">* C'est à votre tour de jouer</li>
+          <li class="text-base text-sm font-bold text-green-500">* En attente du joueur adverse</li>
           <!-- Vous pouvez ajouter d'autres notifications ici -->
         </ul>
       </div>
@@ -69,15 +69,22 @@
 
     </div>
 
+    <div class="flex-grow flex flex-col">
     <!-- Espace interactif du jeu -->
-    <div class="flex-grow bg-base-100 rounded-xl p-4 text-800">
-      <!-- En-tête pour afficher le nom du jeu -->
-      <div class="flex justify-center">
-        <h2 class="text-lg font-bold">Morpion</h2>
+      <div class="flex-grow bg-base-100 rounded-xl p-4 text-800">
+        <!-- En-tête pour afficher le nom du jeu -->
+        <div class="flex justify-center">
+          <h2 class="text-lg font-bold">Morpion</h2>
+        </div>
+        <div class="divider"></div>
+        <!-- Insérer ici le composant interactif du jeu -->
+        <!-- Vous pouvez ajouter du contenu ici, comme une image ou du texte -->
       </div>
-      <div class="divider"></div>
-      <!-- Insérer ici le composant interactif du jeu -->
-      <!-- Vous pouvez ajouter du contenu ici, comme une image ou du texte -->
+      <div class="bg-base-100 rounded-xl p-4 text-800 relative mt-4 overflow-auto" style="max-height: 150px;">
+        <!-- Insérer du texte ici -->
+        <p><strong>Vous</strong> : Lance la partie s'il te plait </p>
+        <p><strong>Vous</strong> : Test message du tchat</p>
+      </div>
     </div>
   </div>
 
