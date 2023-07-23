@@ -1,8 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IGameRoom} from "../../_interfaces/IGameRoom";
 import {Router} from "@angular/router";
 import {GameRoomService} from "../../_services/game-room.service";
 import {UserService} from "../../_services/user.service";
+import {ThemeService} from "../../_services/theme.service";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-game-room',
@@ -11,10 +13,13 @@ import {UserService} from "../../_services/user.service";
 })
 export class GameRoomComponent implements OnInit {
 
-
   gameRooms : IGameRoom[] | undefined = undefined;
   players : { _id : string, pseudo : string }[] | undefined = undefined;
   gameRoomsNumber : number = 0;
+
+  currentUserPseudo : string | null = null;
+
+  currentTheme : BehaviorSubject<string> = new BehaviorSubject<string>("dark")
 
   //Tools
   loadingSpinner = false;
@@ -27,11 +32,15 @@ export class GameRoomComponent implements OnInit {
     private gameRoomService : GameRoomService,
 
     private userService : UserService,
+    private themeService : ThemeService,
 
   ) { }
 
   ngOnInit(): void {
     this.initGameRoomAttributes()
+    this.themeService.getTheme().subscribe(theme => {
+      this.currentTheme.next(theme);
+    });
   }
 
   private async initGameRoomAttributes() {

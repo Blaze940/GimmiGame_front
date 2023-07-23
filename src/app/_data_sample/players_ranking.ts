@@ -1,5 +1,5 @@
 export const players = [
-  { pseudo: 'Mouss', score: 250, favoriteGame: 'Scrabble', description: 'Word game' },
+  { pseudo: 'Mouss', score: 650, favoriteGame: 'Scrabble', description: 'Imbattable' },
   { pseudo: 'Nico', score: 300, favoriteGame: 'Monopoly', description: 'Property trading game' },
   { pseudo: 'MarioMan', score: 180, favoriteGame: 'Chess', description: 'Strategy board game' },
   { pseudo: 'Toto', score: 400, favoriteGame: 'Ticket to Ride', description: 'Train adventure game' },

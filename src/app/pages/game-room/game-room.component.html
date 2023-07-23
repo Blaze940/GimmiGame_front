@@ -1,48 +1,73 @@
-<div class="mockup-window border bg-base-300 p-4 h-full flex flex-col">
-  <div class="flex items-center justify-between mb-4">
-    <h2 class="text-2xl font-bold">Nom de la salle: MaSalle</h2>
-    <h3 class="text-lg font-bold">Jeu: Bataille</h3>
+<div class="h-screen bg-gray-900 text-base flex flex-col" [attr.data-theme]="currentTheme">
+  <!-- Header -->
+  <div class="p-4 bg-base-300 ">
+    <h1 class="text-xl font-bold text-center">MaSalle</h1>
   </div>
 
-  <div class="grid grid-cols-2 gap-4">
-    <div>
-      <p class="text-lg font-bold">Créateur de la salle:</p>
-      <p class="text-lg">Mouss</p>
-    </div>
-    <div>
-      <p class="text-lg font-bold">État de la salle:</p>
-      <p class="text-lg">2/4 joueurs</p>
-    </div>
-  </div>
+  <!-- Main Content -->
+  <div class="flex-grow flex flex-row p-4">
+    <!-- Left sidebar -->
+    <div class="w-1/4 space-y-4">
+      <!-- Room Details -->
+      <div class="p-4 bg-base-200 rounded-xl">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-lg font-bold">Créateur de la salle:</p>
+            <p class="text-lg">Mouss</p>
+          </div>
+          <div>
+            <p class="text-lg font-bold">État de la salle:</p>
+            <p class="text-lg">2/4 joueurs</p>
+          </div>
+        </div>
+      </div>
 
-  <div class="my-4">
-    <h3 class="text-lg font-bold">Participants de la salle:</h3>
-    <div class="grid grid-cols-2 gap-2">
-      <div *ngFor="let player of players" class="flex items-center">
-        <p class="mr-2">{{ player.pseudo }}</p>
+      <!-- Participants de la salle -->
+      <div class="p-4 bg-base-200 rounded-xl" style="overflow: auto;">
+        <h3 class="text-lg font-bold mb-4">Participants de la salle:</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <div *ngFor="let player of players" class="flex items-center">
+            <p class="text-lg">{{ player.pseudo }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Participants du jeu -->
+      <div class="p-4 bg-base-200 rounded-xl" style="overflow: auto;">
+        <h3 class="text-lg font-bold mb-4">Participants du jeu:</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <div *ngFor="let player of players" class="flex items-center">
+            <p class="text-lg">{{ player.pseudo }}</p>
+          </div>
+        </div>
+        <!-- Quitter la liste des joueurs -->
+        <div class="flex justify-end mt-2">
+          <button class="btn btn-danger">Quitter la liste des joueurs</button>
+        </div>
+      </div>
+
+
+      <!-- Notifications en temps réel -->
+      <div class="p-4 bg-base-200 rounded-xl" style="overflow: auto;">
+        <p class="text-lg font-bold">Notifications en temps réel :</p>
+        <ul class="mt-2">
+          <!-- Insérer ici les notifications du jeu -->
+          <li class="text-base">Gagnant : Joueur1</li>
+          <li class="text-base">Tour suivant...</li>
+          <!-- Vous pouvez ajouter d'autres notifications ici -->
+        </ul>
       </div>
     </div>
-  </div>
 
-  <div class="my-4">
-    <h3 class="text-lg font-bold">Participants du jeu:</h3>
-    <div class="grid grid-cols-2 gap-2">
-      <div *ngFor="let player of players" class="flex items-center">
-        <p class="mr-2">{{ player.pseudo }}</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="flex-grow my-4">
     <!-- Espace interactif du jeu -->
-    <div class="h-full bg-blue-500">
+    <div class="flex-grow bg-base-100 rounded-xl p-4 text-gray-800">
       <!-- Insérer ici le composant interactif du jeu -->
       <!-- Vous pouvez ajouter du contenu ici, comme une image ou du texte -->
     </div>
   </div>
 
-  <div class="flex justify-between my-4">
-    <button class="btn btn-primary">Rejoindre la liste des joueurs</button>
-    <button class="btn btn-success">Lancer le jeu</button>
+  <!-- Footer -->
+  <div class="p-4 bg-base-300 text-gray-800 flex justify-end">
+    <button class="btn btn-neutral">Lancer le jeu</button>
   </div>
 </div>
