@@ -17,7 +17,6 @@ export class GameRoomComponent implements OnInit {
   players : { _id : string, pseudo : string }[] | undefined = undefined;
   gameRoomsNumber : number = 0;
 
-  currentUserPseudo : string | null = null;
 
   currentTheme : BehaviorSubject<string> = new BehaviorSubject<string>("dark")
 
