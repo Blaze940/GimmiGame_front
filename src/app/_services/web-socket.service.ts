@@ -17,7 +17,6 @@ export class WebSocketService {
     this.socket.emit('sendMessage', message);
   }
 
-  // WebSocketService
 
   getMessages(): void {
     this.socket.on('receivedMessage', (data: IMsgTchat) => {

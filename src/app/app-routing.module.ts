@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'welcome', component: LandpageComponent },
   {path: 'myfriends', component: MyFriendsComponent},
   {path: 'mygamerooms', component: MyGameRoomsComponent},
-  {path: 'gameroom',component: GameRoomComponent},
+  {path: 'gameroom/:roomId',component: GameRoomComponent},
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
 ];
 @NgModule({

@@ -1,7 +1,7 @@
 <div class="h-screen bg-gray-900 text-base flex flex-col" [attr.data-theme]="currentTheme">
   <!-- Header -->
   <div class="p-4 bg-base-300">
-    <h1 class="text-xl font-bold text-center">MaSalle</h1>
+    <h1 class="text-xl font-bold text-center">{{currentRoomName}}</h1>
   </div>
 
   <!-- Main Content -->
@@ -13,11 +13,11 @@
         <div class="grid grid-cols-2 gap-4">
           <div>
             <p class="text-lg font-bold">Créateur</p>
-            <p class="text-lg">Mouss</p>
+            <p class="text-lg">{{creatorRoom}}</p>
           </div>
           <div>
             <p class="text-lg font-bold">État de la salle</p>
-            <p class="text-lg">2/6 joueurs</p>
+            <p class="text-lg">{{playersNumber}}/{{maxPlayers}} joueurs</p>
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@
 
       <!-- Notifications en temps réel -->
       <div class="p-4 bg-base-200 rounded-xl" style="overflow: auto; max-height: 150px;">
-        <p class="text-lg font-bold">Notifications </p>
+        <p class="text-lg font-bold">Notifications</p>
         <ul class="mt-2">
           <!-- Insérer ici les notifications du jeu -->
           <li class="text-base text-sm font-bold text-green-500">* C'est à votre tour de jouer</li>

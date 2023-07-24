@@ -2,10 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {IGameRoom} from "../../_interfaces/IGameRoom";
 import {GameRoomService} from "../../_services/game-room.service";
 import {Router} from "@angular/router";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ICreateGameRoom} from "../../_interfaces/ICreateGameRoom";
-import {UserService} from "../../_services/user.service";
-import {IRequestUser} from "../../_interfaces/IRequestUser";
 
 @Component({
   selector: 'app-game-room-list',
@@ -106,6 +102,10 @@ export class GameRoomListComponent implements OnInit {
       }
     })
     return isOwnerIncluded;
+  }
+
+  public enterGameroom(roomId :string): void{
+    this.router.navigate(['/gameroom', roomId]);
   }
 
 }

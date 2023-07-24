@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {IGameRoom} from "../../_interfaces/IGameRoom";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {GameRoomService} from "../../_services/game-room.service";
 import {UserService} from "../../_services/user.service";
 import {ThemeService} from "../../_services/theme.service";
@@ -21,7 +21,10 @@ export class GameRoomComponent implements OnInit {
   myChatMessage: string = "";
   chatMessagesByGameRoom: { [gameRoomId: string]: IMsgTchat[] } = {};
   currentUserPseudo = this.userService.getCurrentUserPseudo()
-  currentGameRoomId: string = ""; // Variable pour stocker l'ID de la gameroom actuelle
+  currentGameRoomId: string = "";
+  currentRoomName: string = "";
+  creatorRoom: string = "";
+  maxPlayers: number = 0;
 
   currentTheme: BehaviorSubject<string> = new BehaviorSubject<string>("dark")
 
@@ -33,6 +36,7 @@ export class GameRoomComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private gameRoomService: GameRoomService,
     private userService: UserService,
     private themeService: ThemeService,
@@ -43,6 +47,9 @@ export class GameRoomComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.currentGameRoomId = params['roomId'];
+    });
     this.initGameRoomAttributes();
     this.subscribeToMessages()
     this.themeService.getTheme().subscribe(theme => {
@@ -79,9 +86,12 @@ export class GameRoomComponent implements OnInit {
   private async initGameRoomAttributes() {
     this.loadingSpinner = true;
     try {
-      this.gameRoom = await this.gameRoomService.getOne("64b9c10b05731bc712d28ece")
-      this.players = this.gameRoom!.players;
-      this.playersNumber = this.gameRoom!.players.length;
+      this.gameRoom = await this.gameRoomService.getOne(this.currentGameRoomId);
+
+      if(this.gameRoom){
+        this.setRoomAttributes(this.gameRoom)
+      }
+      this.loadingSpinner = false;
       this.successMessage = "Les salles de jeu ont été chargées avec succès.";
 
       //alert
@@ -89,10 +99,10 @@ export class GameRoomComponent implements OnInit {
         this.successMessage = null;
       }, this.alertDuration);
 
-      // Initialisez chatMessagesByGameRoom ici après avoir obtenu gameRoom avec succès
-      this.currentGameRoomId = this.gameRoom!._id; // Stockez l'ID de la gameroom actuelle
+      // Initialise chatMessagesByGameRoom ici après avoir obtenu gameRoom avec succès
       this.chatMessagesByGameRoom[this.currentGameRoomId] = []; // Initialisez le tableau de messages de chat pour cette gameroom
     } catch (e: any) {
+      this.loadingSpinner = false;
       this.errorMessage = "Erreur lors du chargement des salles de jeu. Veuillez réessayer plus tard."
 
       //alert
@@ -128,31 +138,6 @@ export class GameRoomComponent implements OnInit {
     this.loadingSpinner = false;
   }
 
-  async joinGameRoom(roomName : string){
-    this.loadingSpinner = true;
-    try{
-      await this.gameRoomService.joinGameRoom(roomName);
-      this.successMessage = "Vous avez rejoint la salle de jeu " + roomName + ".";
-
-      //alert
-      setTimeout(() => {
-        this.successMessage = null;
-        this.initGameRoomAttributes();
-      }, this.alertDuration);
-
-    }catch (e : any) {
-      this.errorMessage = "Erreur lors de la sortie de la salle de jeu. Veuillez réessayer plus tard."
-
-      //alert
-      setTimeout(() => {
-        this.errorMessage = null;
-      }, this.alertDuration);
-
-    }
-
-    this.loadingSpinner = false;
-  }
-
   public isOwnerIncludedInPlayers(room : IGameRoom) : boolean{
     let isOwnerIncluded = false;
     room.players.forEach(player => {
@@ -161,6 +146,16 @@ export class GameRoomComponent implements OnInit {
       }
     })
     return isOwnerIncluded;
+  }
+
+  setRoomAttributes(room : IGameRoom) : void {
+    this.currentRoomName = room.roomName;
+    this.maxPlayers = room.maxPlayers;
+    this.playersNumber = room.players.length;
+    this.players = room.players;
+    this.creatorRoom = room.creator.pseudo;
+
+
   }
 
 }
