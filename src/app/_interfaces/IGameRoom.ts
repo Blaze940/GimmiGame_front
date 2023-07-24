@@ -1,4 +1,5 @@
 export interface IGameRoom {
+    _id: string;
     roomName: string;
     currentGame: string;
     players: {

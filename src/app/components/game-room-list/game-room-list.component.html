@@ -13,7 +13,7 @@
           <tr>
             <th>Room</th>
             <th>En cours</th>
-            <th>Joueurs</th>
+            <th>Participants</th>
             <th>Action</th>
             <th></th>
           </tr>
@@ -50,7 +50,7 @@
               </ng-container>
               <ng-template #elseBlock>
                 <!--TODO: ENTER BUTTON REDIRECT TOWARDS GAMEROOM COMPONENT-->
-                <button class="btn btn-primary">Entrer</button>
+                <button class="btn btn-primary" (click)="enterGameroom(gameRoom._id)">Entrer</button>
               </ng-template>
             </td>
             <td>
@@ -63,7 +63,7 @@
           <tr>
             <th>Room</th>
             <th>En cours</th>
-            <th>Joueurs</th>
+            <th>Participants</th>
             <th>Action</th>
             <th></th>
           </tr>

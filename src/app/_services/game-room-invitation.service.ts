@@ -27,58 +27,7 @@ export class GameRoomInvitationService {
     }
   }
 
-  getAllSentToUser() : Promise<IGameRoomInvitation[] | undefined> {
-    //Get the current user
-    let currentUserPseudo : string | null;
-    let currentUser : any | null ;
-    try{
-      currentUserPseudo = this.userService.getCurrentUserPseudo();
-      currentUser = this.userService.getUserByPseudo(currentUserPseudo);
-    } catch (e) {
-      return Promise.reject(e);
-    }
-
-    if(currentUserPseudo === null){
-      return Promise.reject("User not connected");
-    }
-
-    if(currentUser === null){
-      return Promise.reject("User not found");
-    }
-
-    return Promise.resolve(this.getAllPendingSentTo(currentUser._id)) ;
-  }
-
-  getAllSentByUser() : Promise<IGameRoomInvitation[] | undefined> {
-    //Get the current user
-    let currentUserPseudo : string | null;
-    let currentUser : any | null ;
-    try{
-      currentUserPseudo = this.userService.getCurrentUserPseudo();
-      currentUser = this.userService.getUserByPseudo(currentUserPseudo);
-    } catch (e) {
-      return Promise.reject(e);
-    }
-
-    if(currentUserPseudo === null){
-      return Promise.reject("User not connected");
-    }
-
-    if(currentUser === null){
-      return Promise.reject("User not found");
-    }
-
-    return Promise.resolve(this.getAllPendingSentBy(currentUser._id)) ;
-  }
-
-  async getOneById(_id: string) : Promise<IGameRoomInvitation | undefined> {
-    try{
-      const response = await this.gameRoomInvitationAPIService.getOneById(_id).toPromise();
-      return Promise.resolve(response);
-    } catch (e) {
-      return Promise.reject(e);
-    }
-  }
+  //
 
   async sendGameRoomInvitation(gameRoomInvitationBody: ICreateGameRoomInvitation) : Promise<void> {
     try{
@@ -159,4 +108,57 @@ export class GameRoomInvitationService {
 
     return Promise.resolve(allSentBy);
   }
+
+    //getAllSentToUser() : Promise<IGameRoomInvitation[] | undefined> {
+    //   //Get the current user
+    //   let currentUserPseudo : string | null;
+    //   let currentUser : any | null ;
+    //   try{
+    //     currentUserPseudo = this.userService.getCurrentUserPseudo();
+    //     currentUser = this.userService.getUserByPseudo(currentUserPseudo);
+    //   } catch (e) {
+    //     return Promise.reject(e);
+    //   }
+    //
+    //   if(currentUserPseudo === null){
+    //     return Promise.reject("User not connected");
+    //   }
+    //
+    //   if(currentUser === null){
+    //     return Promise.reject("User not found");
+    //   }
+    //
+    //   return Promise.resolve(this.getAllPendingSentTo(currentUser._id)) ;
+    // }
+    //
+    // getAllSentByUser() : Promise<IGameRoomInvitation[] | undefined> {
+    //   //Get the current user
+    //   let currentUserPseudo : string | null;
+    //   let currentUser : any | null ;
+    //   try{
+    //     currentUserPseudo = this.userService.getCurrentUserPseudo();
+    //     currentUser = this.userService.getUserByPseudo(currentUserPseudo);
+    //   } catch (e) {
+    //     return Promise.reject(e);
+    //   }
+    //
+    //   if(currentUserPseudo === null){
+    //     return Promise.reject("User not connected");
+    //   }
+    //
+    //   if(currentUser === null){
+    //     return Promise.reject("User not found");
+    //   }
+    //
+    //   return Promise.resolve(this.getAllPendingSentBy(currentUser._id)) ;
+    // }
+    //
+    // async getOneById(_id: string) : Promise<IGameRoomInvitation | undefined> {
+    //   try{
+    //     const response = await this.gameRoomInvitationAPIService.getOneById(_id).toPromise();
+    //     return Promise.resolve(response);
+    //   } catch (e) {
+    //     return Promise.reject(e);
+    //   }
+    // }
 }

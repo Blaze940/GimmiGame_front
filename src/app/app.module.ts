@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from "@angular/common/http";
 import { AppComponent } from './app.component';
 import { LandpageComponent } from './pages/landpage/landpage.component';
@@ -30,8 +30,12 @@ import { GameRoomCreateComponent } from './components/game-room-create/game-room
 import { GameRoomInvitationManagementComponent } from './components/game-room-invitation-management/game-room-invitation-management.component';
 import { GameRoomInvitationReceivedComponent } from './components/game-room-invitation-received/game-room-invitation-received.component';
 import { GameRoomInvitationSentComponent } from './components/game-room-invitation-sent/game-room-invitation-sent.component';
+import { GameRoomComponent } from './pages/game-room/game-room.component';
+import { FriendRankingComponent } from './components/friend-ranking/friend-ranking.component';
+import {WebSocketService} from "./_services/web-socket.service";
+import {SocketIoModule, SocketIoConfig} from "ngx-socket-io";
 
-
+const config: SocketIoConfig = { url: 'ws://localhost:3000', options: {} };
 
 
 @NgModule({
@@ -58,19 +62,21 @@ import { GameRoomInvitationSentComponent } from './components/game-room-invitati
     GameRoomInvitationManagementComponent,
     GameRoomInvitationReceivedComponent,
     GameRoomInvitationSentComponent,
+    GameRoomComponent,
+    FriendRankingComponent,
   ],
-  imports: [CommonModule, BrowserModule, AppRoutingModule,ReactiveFormsModule, HttpClientModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: () => {
-          return localStorage.getItem('token');
-        },
-        allowedDomains: environment.domain_allowed,
-        disallowedRoutes: environment.routes_needingToken,
-      }
-    })
-  ],
-  providers: [UserAPIService,TokenService,UserService],
+    imports: [CommonModule, BrowserModule, AppRoutingModule, ReactiveFormsModule, HttpClientModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: () => {
+                    return localStorage.getItem('token');
+                },
+                allowedDomains: environment.domain_allowed,
+                disallowedRoutes: environment.routes_needingToken,
+            }
+        }), FormsModule,SocketIoModule.forRoot(config)
+    ],
+  providers: [UserAPIService,TokenService,UserService,WebSocketService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

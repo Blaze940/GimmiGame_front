@@ -1,0 +1,98 @@
+<div class="h-screen bg-gray-900 text-base flex flex-col" [attr.data-theme]="currentTheme">
+  <!-- Header -->
+  <div class="p-4 bg-base-300">
+    <h1 class="text-xl font-bold text-center">{{currentRoomName}}</h1>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-grow flex flex-row p-4">
+    <!-- Left sidebar -->
+    <div class="w-1/4 space-y-4 pr-4">
+      <!-- Room Details -->
+      <div class="p-4 bg-base-200 rounded-xl">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-lg font-bold">Créateur</p>
+            <p class="text-lg">{{creatorRoom}}</p>
+          </div>
+          <div>
+            <p class="text-lg font-bold">État de la salle</p>
+            <p class="text-lg">{{playersNumber}}/{{maxPlayers}} joueurs</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Participants de la salle -->
+      <div class="p-4 bg-base-200 rounded-xl" style="overflow: auto; max-height: 150px;">
+        <h3 class="text-lg font-bold mb-2">Dans cette room</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <div *ngFor="let player of players" class="flex items-center">
+            <p class="text-sm">{{ player.pseudo }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Participants du jeu -->
+      <div class="p-4 bg-base-200 rounded-xl relative" style="overflow: auto; max-height: 150px;">
+        <div class="absolute top-4 right-4 flex space-x-2">
+          <button class="btn btn-primary btn-sm">Rejoindre</button>
+          <button class="btn btn-danger btn-sm">Quitter</button>
+        </div>
+        <h3 class="text-lg font-bold mb-4">Jeu en cours</h3>
+        <h3 class="text-sm font-bold mb-4 text-red-500">1/2 joueurs</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <div *ngFor="let player of players" class="flex items-center">
+            <p class="text-sm">{{ player.pseudo }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notifications en temps réel -->
+      <div class="p-4 bg-base-200 rounded-xl" style="overflow: auto; max-height: 150px;">
+        <p class="text-lg font-bold">Notifications</p>
+        <ul class="mt-2">
+          <!-- Insérer ici les notifications du jeu -->
+          <li class="text-base text-sm font-bold text-green-500">* C'est à votre tour de jouer</li>
+          <li class="text-base text-sm font-bold text-green-500">* En attente du joueur adverse</li>
+          <!-- Vous pouvez ajouter d'autres notifications ici -->
+        </ul>
+      </div>
+
+      <!-- Tchat -->
+      <div class="p-4 bg-base-200 rounded-xl mt-4 flex flex-col" style="height: 200px;">
+        <h3 class="text-lg font-bold mb-4">Tchat</h3>
+        <textarea [(ngModel)]="myChatMessage" class="flex-grow bg-base-100 rounded-lg p-2 mb-4" placeholder="Entrez votre message ici..."></textarea>
+        <div class="flex justify-end">
+          <button class="btn btn-primary" (click)="sendMessage()">Envoyer</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="flex-grow flex flex-col">
+    <!-- Espace interactif du jeu -->
+      <div class="flex-grow bg-base-100 rounded-xl p-4 text-800">
+        <!-- En-tête pour afficher le nom du jeu -->
+        <div class="flex justify-center">
+          <h2 class="text-lg font-bold">Morpion</h2>
+        </div>
+        <div class="divider"></div>
+        <!-- Insérer ici le composant interactif du jeu -->
+        <!-- Vous pouvez ajouter du contenu ici, comme une image ou du texte -->
+      </div>
+      <div class="bg-base-100 rounded-xl p-4 text-800 relative mt-4 overflow-auto " style="max-height: 150px;">
+        <!-- Insérer du texte ici -->
+          <div  *ngFor="let message of chatMessagesByGameRoom[currentGameRoomId]" class=" chat-bubble chat-bubble-primary mb-2">
+            <p class="text-sm">
+              <strong>{{ message.from }}</strong> : {{ message.msg }}
+            </p>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="p-4 bg-base-300 text-gray-800 flex justify-center">
+    <button class="btn btn-primary">Lancer jeu</button>
+  </div>
+</div>

@@ -48,6 +48,7 @@ export class LoginCardComponent implements OnInit {
         "Heureux de te revoir " + this.loginFormSubmitted.pseudo +" !";
       this.loginForm.reset();
 
+
       //Timeout to let the user read the success message
       setTimeout(() => {
         this.router.navigate(['/']).then(() => {

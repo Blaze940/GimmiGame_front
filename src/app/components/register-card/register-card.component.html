@@ -16,6 +16,15 @@
       </div>
     </ng-template>
 
+    <ng-container *ngIf="successMessage && showVideo">
+      <div class="video-container absolute top-0 left-0 w-full h-full z-10 flex items-center justify-center">
+        <video class="w-full h-full object-cover" controls autoplay>
+          <source src="assets/animations/video_gamingzone.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </ng-container>
+
     <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
       <div class="card-body">
         <form *ngIf="registrationForm" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">

@@ -7,7 +7,7 @@
       <div >
         <input type="text" formControlName="pseudoToSearch" class="input input-bordered join-item" placeholder="Chercher un ami"/>
         <button class="btn btn-primary" type="submit" [disabled]="searchForm.invalid" >Envoyer demande</button>
-        <div *ngIf="searchForm.get('pseudoToSearch')?.invalid && (searchForm.get('pseudoToSearch')?.dirty || searchForm.get('pseudoToSearch')?.touched)" class="text-xs text-error">Le pseudo cherché contient entre 3 et 20 caractères</div>
+        <div *ngIf="searchForm.get('pseudoToSearch')?.invalid && (searchForm.get('pseudoToSearch')?.dirty || searchForm.get('pseudoToSearch')?.touched)" class="text-xs text-error">Le pseudo contient entre 3 et 20 caractères</div>
       </div>
       </form>
     </div>

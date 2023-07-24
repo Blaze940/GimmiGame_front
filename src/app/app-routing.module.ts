@@ -6,6 +6,7 @@ import {LoginComponent} from "./pages/login/login.component";
 import {RegisterComponent} from "./pages/register/register.component";
 import {MyFriendsComponent} from "./pages/profile/my-friends/my-friends.component";
 import {MyGameRoomsComponent} from "./pages/profile/my-game-rooms/my-game-rooms.component";
+import {GameRoomComponent} from "./pages/game-room/game-room.component";
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -13,8 +14,9 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
 
   { path: 'welcome', component: LandpageComponent },
-  {path: 'friends', component: MyFriendsComponent},
-  {path: 'gamerooms', component: MyGameRoomsComponent},
+  {path: 'myfriends', component: MyFriendsComponent},
+  {path: 'mygamerooms', component: MyGameRoomsComponent},
+  {path: 'gameroom/:roomId',component: GameRoomComponent},
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
 ];
 @NgModule({

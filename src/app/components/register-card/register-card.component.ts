@@ -17,6 +17,7 @@ export class RegisterCardComponent implements OnInit {
   registrationFormSubmitted!: ISignUp;
   errorMessage = '';
   successMessage = '';
+  showVideo = false;
 
   loadingSpinner = false;
 
@@ -46,12 +47,18 @@ export class RegisterCardComponent implements OnInit {
         "Bienvenue dans ton monde " + this.registrationFormSubmitted.pseudo +" !";
       this.registrationForm.reset();
 
+      //setTimeout to let the user see the video
+      setTimeout(() => {
+        this.showVideo = true;
+      }, 3000);
+
       //Timeout to let the user read the success message
       setTimeout(() => {
         this.router.navigate(['/']).then(() => {
           window.location.href = '/?refresh=true';
         });
-      }, 3000);
+      }, 10000);
+
 
     } catch (error: any) {
       this.errorMessage = "Ce pseudo ou cette adresse email existe déjà.";
