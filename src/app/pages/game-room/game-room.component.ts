@@ -18,6 +18,15 @@ import {MorpionKey} from "../../_enums/MorpionKey";
 export class GameRoomComponent implements OnInit {
   currentTheme: BehaviorSubject<string> = new BehaviorSubject<string>("dark")
 
+  //Game Session
+  // canBeLaunched : boolean = false;
+  // isStarted : boolean = false;
+
+  //Pour tests
+  canBeLaunched : boolean = true;
+  isStarted : boolean = true;
+
+
 ///
   gameRoom: IGameRoom | undefined = undefined;
   players: { _id: string, pseudo: string }[] = [];
@@ -38,13 +47,13 @@ export class GameRoomComponent implements OnInit {
 
   padMorpion : IPadMorpion = {
     touches : new Map([
-      [MorpionKey.TopLeft, false],
+      [MorpionKey.TopLeft, false], // false pour indiquer que la case n'est pas marquée
       [MorpionKey.TopMid, false],
       [MorpionKey.TopRight, false],
       [MorpionKey.MidLeft, false],
       [MorpionKey.Center, false],
       [MorpionKey.MidRight, false],
-      [MorpionKey.BottomLeft, false], // false pour indiquer que la case n'est pas marquée
+      [MorpionKey.BottomLeft, false],
       [MorpionKey.BottomMid, false],
       [MorpionKey.BottomRight, false],
     ])
@@ -64,10 +73,7 @@ export class GameRoomComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
     private webSocketService: WebSocketService
-  ) {
-    // Ne faites pas cela dans le constructeur, car gameRoom n'est pas encore défini ici.
-    // Vous initialiserez chatMessagesByGameRoom dans la méthode ngOnInit()
-  }
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -141,7 +147,7 @@ export class GameRoomComponent implements OnInit {
     if (this.selectedCase) {
       // Ici, vous pouvez utiliser this.selectedCase pour accéder à la clé de la case sélectionnée.
       console.log('Case sélectionnée:', this.selectedCase);
-      console.log('Valeur de la case sélectionnée: ', this.padMorpion.touches.get(this.selectedCase));
+      //console.log('Valeur de la case sélectionnée: ', this.padMorpion.touches.get(this.selectedCase));
 
       // Vous pouvez également mettre à jour la valeur de la case sélectionnée dans l'objet padMorpion si nécessaire.
       this.padMorpion.touches.set(this.selectedCase, true);
@@ -172,6 +178,16 @@ export class GameRoomComponent implements OnInit {
       MorpionKey.BottomRight,
     ];
   }
+
+  //GameSession functions
+  public startGameSession(){
+    this.isStarted = true;
+  }
+  public stopGameSession(){
+    this.isStarted = false;
+  }
+
+
 
   //GameRoom Functions
 
