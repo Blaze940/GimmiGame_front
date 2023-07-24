@@ -5,6 +5,8 @@ import {GameRoomService} from "../../_services/game-room.service";
 import {UserService} from "../../_services/user.service";
 import {ThemeService} from "../../_services/theme.service";
 import {BehaviorSubject} from "rxjs";
+import {IMsgTchat} from "../../_interfaces/IMsgTchat";
+import {WebSocketService} from "../../_services/web-socket.service";
 
 @Component({
   selector: 'app-game-room',
@@ -13,12 +15,15 @@ import {BehaviorSubject} from "rxjs";
 })
 export class GameRoomComponent implements OnInit {
 
-  gameRooms : IGameRoom[] | undefined = undefined;
-  players : { _id : string, pseudo : string }[] | undefined = undefined;
-  gameRoomsNumber : number = 0;
+  gameRoom: IGameRoom | undefined = undefined;
+  players: { _id: string, pseudo: string }[] = [];
+  playersNumber: number = 0;
+  myChatMessage: string = "";
+  chatMessagesByGameRoom: { [gameRoomId: string]: IMsgTchat[] } = {};
+  currentUserPseudo = this.userService.getCurrentUserPseudo()
+  currentGameRoomId: string = ""; // Variable pour stocker l'ID de la gameroom actuelle
 
-
-  currentTheme : BehaviorSubject<string> = new BehaviorSubject<string>("dark")
+  currentTheme: BehaviorSubject<string> = new BehaviorSubject<string>("dark")
 
   //Tools
   loadingSpinner = false;
@@ -28,32 +33,74 @@ export class GameRoomComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private gameRoomService : GameRoomService,
-
-    private userService : UserService,
-    private themeService : ThemeService,
-
-  ) { }
+    private gameRoomService: GameRoomService,
+    private userService: UserService,
+    private themeService: ThemeService,
+    private webSocketService: WebSocketService
+  ) {
+    // Ne faites pas cela dans le constructeur, car gameRoom n'est pas encore défini ici.
+    // Vous initialiserez chatMessagesByGameRoom dans la méthode ngOnInit()
+  }
 
   ngOnInit(): void {
-    this.initGameRoomAttributes()
+    this.initGameRoomAttributes();
+    this.subscribeToMessages()
     this.themeService.getTheme().subscribe(theme => {
       this.currentTheme.next(theme);
     });
   }
 
+  sendMessage() {
+    if (this.myChatMessage && this.currentGameRoomId) { // Vérifie si currentGameRoomId est défini
+      const chatMessage: IMsgTchat = {
+        from: this.currentUserPseudo!,
+        msg: this.myChatMessage
+      };
+      this.chatMessagesByGameRoom[this.currentGameRoomId].push(chatMessage); // Utilise currentGameRoomId pour ajouter le message de chat à la gameroom spécifique
+      this.webSocketService.sendMessage(chatMessage);
+      this.myChatMessage = '';
+    }
+  }
+  subscribeToMessages() {
+    this.webSocketService.getMessages();
+    this.webSocketService.receivedMessages$.subscribe((data: IMsgTchat[]) => {
+      const currentRoomMessages = this.chatMessagesByGameRoom[this.currentGameRoomId];
+      if (currentRoomMessages) {
+        // Ajoute uniquement les nouveaux messages reçus à la liste des messages locaux
+        const newMessages = data.filter((message) => !currentRoomMessages.some((msg) => msg.from === message.from && msg.msg === message.msg));
+        currentRoomMessages.push(...newMessages);
+      }
+    });
+  }
+
+
+
+
   private async initGameRoomAttributes() {
     this.loadingSpinner = true;
-    try{
-      this.gameRooms = await this.gameRoomService.getMyRooms()
-    }catch (e : any) {
-      this.errorMessage = "Erreur lors de la récupération des salles de jeu. Veuillez réessayer plus tard."
+    try {
+      this.gameRoom = await this.gameRoomService.getOne("64b9c10b05731bc712d28ece")
+      this.players = this.gameRoom!.players;
+      this.playersNumber = this.gameRoom!.players.length;
+      this.successMessage = "Les salles de jeu ont été chargées avec succès.";
+
+      //alert
+      setTimeout(() => {
+        this.successMessage = null;
+      }, this.alertDuration);
+
+      // Initialisez chatMessagesByGameRoom ici après avoir obtenu gameRoom avec succès
+      this.currentGameRoomId = this.gameRoom!._id; // Stockez l'ID de la gameroom actuelle
+      this.chatMessagesByGameRoom[this.currentGameRoomId] = []; // Initialisez le tableau de messages de chat pour cette gameroom
+    } catch (e: any) {
+      this.errorMessage = "Erreur lors du chargement des salles de jeu. Veuillez réessayer plus tard."
+
+      //alert
+      setTimeout(() => {
+        this.errorMessage = null;
+      }, this.alertDuration);
+
     }
-
-    this.gameRoomsNumber = this.gameRooms?.length || 0;
-    this.players = this.gameRooms?.map(room => room.players).flat() || [];
-
-    this.loadingSpinner = false;
   }
 
   async exitGameRoom(roomName : string){
