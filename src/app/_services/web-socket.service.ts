@@ -17,13 +17,13 @@ export class WebSocketService {
     this.socket.emit('sendMessage', message);
   }
 
-
   getMessages(): void {
     this.socket.on('receivedMessage', (data: IMsgTchat) => {
       console.log("Message received : ", data);
       this.receivedMessagesSubject.next([...this.receivedMessagesSubject.getValue(), data]);
     });
   }
+
 
 
 }
