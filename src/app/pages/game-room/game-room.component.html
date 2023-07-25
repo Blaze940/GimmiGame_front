@@ -35,14 +35,14 @@
       <!-- Participants du jeu -->
       <div class="p-4 bg-base-200 rounded-xl relative" style="overflow: auto; max-height: 150px;">
         <div class="absolute top-4 right-4 flex space-x-2">
-          <button class="btn btn-primary btn-sm">Rejoindre</button>
-          <button class="btn btn-danger btn-sm">Quitter</button>
+          <button *ngIf="!hasJoinGameSession" class="btn btn-primary btn-sm" (click)="connectGame()">Rejoindre</button>
+          <button *ngIf="hasJoinGameSession"class="btn btn-danger btn-sm" (click)="disconnectGame()">Quitter</button>
         </div>
         <h3 class="text-lg font-bold mb-4">Session en cours</h3>
-        <h3 class="text-sm font-bold mb-4 text-red-500">1/2 joueurs</h3>
+        <h3 class="text-sm font-bold mb-4 text-red-500">{{gameConnectedUsers.length}}/2 joueurs</h3>
         <div class="grid grid-cols-2 gap-2">
-          <div *ngFor="let player of players" class="flex items-center">
-            <p class="text-sm">{{ player.pseudo }}</p>
+          <div *ngFor="let pseudo of gameConnectedUsers" class="flex items-center">
+            <p class="text-sm">{{ pseudo }}</p>
           </div>
         </div>
       </div>
@@ -80,17 +80,39 @@
         <br><br><br> <!--Used to center the game. Don't remove-->
 
         <!-- Composant interactif du jeu (morpion)-->
-        <div class="flex justify-center items-center mt-4">
-          <svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-            <!-- Lignes du morpion -->
-            <line x1="33.33" y1="0" x2="33.33" y2="100" stroke="black" stroke-width="2"/>
-            <line x1="66.67" y1="0" x2="66.67" y2="100" stroke="black" stroke-width="2"/>
-            <line x1="0" y1="33.33" x2="100" y2="33.33" stroke="black" stroke-width="2"/>
-            <line x1="0" y1="66.67" x2="100" y2="66.67" stroke="black" stroke-width="2"/>
 
-            <!-- Symboles X et O -->
-            <!-- Symbole X -->
-          </svg>
+        <div *ngIf="isStarted && dataFromServer" class="flex justify-center items-center mt-4">
+
+            <!-- Other SVG elements can go here -->
+            <ng-container *ngIf="dataFromServer">
+              <svg [attr.width]="dataFromServer.displays[0]!.width" [attr.height]="dataFromServer.displays[0]!.height" xmlns="http://www.w3.org/2000/svg" version="1.1">
+                <ng-container *ngFor="let element of dataFromServer.displays[0]?.content || []">
+                  <!-- Use ng-container to render the SVG elements dynamically -->
+
+                    <ng-container *ngIf="element.tag">
+                      <ng-container [ngSwitch]="element.tag">
+                        <line *ngSwitchCase="'line'"
+                              [attr.x1]="element.x1"
+                              [attr.y1]="element.y1"
+                              [attr.x2]="element.x2"
+                              [attr.y2]="element.y2"
+                              stroke="black"
+                              strokeWidth="4">
+                        </line>
+                        <circle *ngSwitchCase="'circle'"
+                                [attr.cx]="element.cx"
+                                [attr.cy]="element.cy"
+                                [attr.r]="element.r"
+                                [attr.fill]="element.fill">
+                        </circle>
+                        <!-- Add more cases for other SVG elements if needed -->
+                      </ng-container>
+                    </ng-container>
+                </ng-container>
+              </svg>
+            </ng-container>
+
+
         </div>
 
         <!-- PAD choix-->
@@ -105,12 +127,12 @@
 
           <!-- Bouton "Jouer cette case" -->
           <div class="mt-4 flex justify-start">
-            <button class="btn btn-neutral" [disabled]="selectedCase === null" (click)="jouerCetteCase()">Jouer cette case</button>
+            <button class="btn btn-neutral" [disabled]="selectedCase === null || !yourTurn" (click)="playThisCase()">Jouer cette case</button>
           </div>
         </ng-container>
       </div>
 
-      <!--Tchat messages -->
+      <!--Chat messages -->
       <div class="bg-base-100 rounded-xl p-4 text-800 relative mt-4 overflow-auto " style="max-height: 150px;">
         <div  *ngFor="let message of chatMessagesByGameRoom[currentGameRoomId]" class=" chat-bubble chat-bubble-primary mb-2">
           <p class="text-sm">
@@ -123,6 +145,6 @@
 
   <!-- Footer -->
   <div class="p-4 bg-base-300 text-gray-800 flex justify-center">
-    <button class="btn btn-primary" [disabled]="!canBeLaunched">Lancer jeu</button>
+    <button class="btn btn-primary" [disabled]="!canBeLaunched || isStarted" (click)="startGame()">Lancer jeu</button>
   </div>
 </div>

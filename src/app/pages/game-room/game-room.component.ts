@@ -10,6 +10,8 @@ import {WebSocketService} from "../../_services/web-socket.service";
 import {IPadMorpion} from "../../_interfaces/IPadMorpion";
 import {MorpionKey} from "../../_enums/MorpionKey";
 
+import {IDataFromServer} from "../../_interfaces/IDataFromServerInterfaces";
+
 @Component({
   selector: 'app-game-room',
   templateUrl: './game-room.component.html',
@@ -17,14 +19,20 @@ import {MorpionKey} from "../../_enums/MorpionKey";
 })
 export class GameRoomComponent implements OnInit {
   currentTheme: BehaviorSubject<string> = new BehaviorSubject<string>("dark")
+  svgElements : any = []
 
+  MAX_PLAYER_MORPION = 2
   //Game Session
   // canBeLaunched : boolean = false;
   // isStarted : boolean = false;
 
   //Pour tests
-  canBeLaunched : boolean = true;
-  isStarted : boolean = true;
+  canBeLaunched : boolean = false;
+  isStarted : boolean = false;
+  yourTurn = false;
+  hasJoinGameSession : boolean = false ;
+  //dataFromServer : any = null;
+  dataFromServer?: IDataFromServer | null = null;
 
 
 ///
@@ -39,6 +47,7 @@ export class GameRoomComponent implements OnInit {
   creatorRoom: string = "";
   currentGameName : string = "" ;
   maxPlayers: number = 0;
+  gameConnectedUsers : string[] = [];
 ///
 
 
@@ -81,6 +90,9 @@ export class GameRoomComponent implements OnInit {
     });
     this.initGameRoomAttributes();
     this.subscribeToMessages()
+    this.subscribeToGameConnectedUsers()
+    this.subscribeToGameStarted()
+    this.subscribeToGameDataFromServer()
     this.themeService.getTheme().subscribe(theme => {
       this.currentTheme.next(theme);
     });
@@ -97,7 +109,7 @@ export class GameRoomComponent implements OnInit {
       this.myChatMessage = '';
     }
   }
-  subscribeToMessages() {
+  private subscribeToMessages() {
     this.webSocketService.getMessages();
     this.webSocketService.receivedMessages$.subscribe((data: IMsgTchat[]) => {
       const currentRoomMessages = this.chatMessagesByGameRoom[this.currentGameRoomId];
@@ -143,7 +155,54 @@ export class GameRoomComponent implements OnInit {
   }
 
   //Morpion Functions
-  jouerCetteCase() {
+
+  private subscribeToGameConnectedUsers(){
+    this.webSocketService.getGameConnectedUsers();
+    this.webSocketService.gameConnectedUsers$.subscribe((data: string[]) => {
+      this.gameConnectedUsers = data;
+      if(this.gameConnectedUsers.includes(this.currentUserPseudo!)){
+        this.hasJoinGameSession = true;
+      }else{
+        this.hasJoinGameSession = false;
+      }
+
+      if(this.gameConnectedUsers.length === this.MAX_PLAYER_MORPION){
+        this.canBeLaunched = true;
+      }else{
+        this.canBeLaunched = false;
+      }
+    });
+  }
+
+  private subscribeToGameStarted(){
+    this.webSocketService.getGameStarted();
+    this.webSocketService.gameStatus$.subscribe((data) => {
+      this.isStarted = data ;
+    });
+  }
+
+  private subscribeToGameDataFromServer() : void {
+    this.webSocketService.getGameDataFromServer();
+    this.webSocketService.gameDataFromServer$.subscribe((data) => {
+      this.dataFromServer= data;
+      console.log("DataServer Jsonifier" + JSON.stringify(this.dataFromServer))
+    });
+  }
+
+  public connectGame(){
+    this.webSocketService.connectGame(this.currentUserPseudo)
+  }
+
+  public disconnectGame(){
+    this.webSocketService.disconnectGame(this.currentUserPseudo)
+  }
+
+  public startGame(){
+    this.webSocketService.startGame(this.currentUserPseudo)
+    this.yourTurn = true;
+  }
+
+  playThisCase() {
     if (this.selectedCase) {
       // Ici, vous pouvez utiliser this.selectedCase pour accéder à la clé de la case sélectionnée.
       console.log('Case sélectionnée:', this.selectedCase);
@@ -155,8 +214,30 @@ export class GameRoomComponent implements OnInit {
 
       // Réinitialiser la sélection après avoir joué la case
       this.selectedCase = null;
+      this.yourTurn = false ;
     }
   }
+
+  // displayGameContent(){
+  //   if(this.dataFromServer.displays){
+  //     for (let i = 1; i < this.dataFromServer.displays[0].content.length; i++) {
+  //       if (this.dataFromServer.displays[0].content[i].tag === "line") {
+  //         this.svgElements.push(<line x1={this.dataFromServer.displays[0].content[i].x1}
+  //         x2={this.dataFromServer.displays[0].content[i].x2}
+  //         y1={this.dataFromServer.displays[0].content[i].y1}
+  //         y2={this.dataFromServer.displays[0].content[i].y2}
+  //         stroke={"black"}
+  //         strokeWidth="4"/>);
+  //       }
+  //       if (this.dataFromServer.displays[0].content[i].tag === "circle") {
+  //         this.svgElements.push(<circle cx={this.dataFromServer.displays[0].content[i].cx}
+  //         cy={this.dataFromServer.displays[0].content[i].cy}
+  //         r={this.dataFromServer.displays[0].content[i].r}
+  //         fill={this.dataFromServer.displays[0].content[i].fill}/>);
+  //       }
+  //     }
+  //   }
+  // }
 
   selectCase(key: MorpionKey) {
     this.selectedCase = key;
