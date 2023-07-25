@@ -34,6 +34,8 @@ import { GameRoomComponent } from './pages/game-room/game-room.component';
 import { FriendRankingComponent } from './components/friend-ranking/friend-ranking.component';
 import {WebSocketService} from "./_services/web-socket.service";
 import {SocketIoModule, SocketIoConfig} from "ngx-socket-io";
+import { ToastrModule } from 'ngx-toastr';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 const config: SocketIoConfig = { url: 'ws://localhost:3000', options: {} };
 
@@ -64,8 +66,10 @@ const config: SocketIoConfig = { url: 'ws://localhost:3000', options: {} };
     GameRoomInvitationSentComponent,
     GameRoomComponent,
     FriendRankingComponent,
+
   ],
     imports: [CommonModule, BrowserModule, AppRoutingModule, ReactiveFormsModule, HttpClientModule,
+        ToastrModule.forRoot(),
         JwtModule.forRoot({
             config: {
                 tokenGetter: () => {
@@ -74,7 +78,8 @@ const config: SocketIoConfig = { url: 'ws://localhost:3000', options: {} };
                 allowedDomains: environment.domain_allowed,
                 disallowedRoutes: environment.routes_needingToken,
             }
-        }), FormsModule,SocketIoModule.forRoot(config)
+        }), FormsModule,SocketIoModule.forRoot(config),
+      BrowserAnimationsModule
     ],
   providers: [UserAPIService,TokenService,UserService,WebSocketService],
   bootstrap: [AppComponent],

@@ -35,14 +35,14 @@
       <!-- Participants du jeu -->
       <div class="p-4 bg-base-200 rounded-xl relative" style="overflow: auto; max-height: 150px;">
         <div class="absolute top-4 right-4 flex space-x-2">
-          <button class="btn btn-primary btn-sm">Rejoindre</button>
-          <button class="btn btn-danger btn-sm">Quitter</button>
+          <button *ngIf="!hasJoinGameSession && !isStarted" class="btn btn-primary btn-sm" (click)="connectGame()">Rejoindre</button>
+          <button *ngIf="hasJoinGameSession && !isStarted" class="btn btn-danger btn-sm" (click)="disconnectGame()">Quitter</button>
         </div>
-        <h3 class="text-lg font-bold mb-4">Jeu en cours</h3>
-        <h3 class="text-sm font-bold mb-4 text-red-500">1/2 joueurs</h3>
+        <h3 class="text-lg font-bold mb-4">Session en cours</h3>
+        <h3 class="text-sm font-bold mb-4 text-red-500">{{gameConnectedUsers.length}}/2 joueurs</h3>
         <div class="grid grid-cols-2 gap-2">
-          <div *ngFor="let player of players" class="flex items-center">
-            <p class="text-sm">{{ player.pseudo }}</p>
+          <div *ngFor="let pseudo of gameConnectedUsers" class="flex items-center">
+            <p class="text-sm">{{ pseudo }}</p>
           </div>
         </div>
       </div>
@@ -52,47 +52,99 @@
         <p class="text-lg font-bold">Notifications</p>
         <ul class="mt-2">
           <!-- Insérer ici les notifications du jeu -->
-          <li class="text-base text-sm font-bold text-green-500">* C'est à votre tour de jouer</li>
           <li class="text-base text-sm font-bold text-green-500">* En attente du joueur adverse</li>
+          <li *ngIf="notifications" class="text-base text-sm font-bold text-green-500">* {{notifications}}</li>
           <!-- Vous pouvez ajouter d'autres notifications ici -->
         </ul>
       </div>
 
-      <!-- Tchat -->
+      <!-- Chat -->
       <div class="p-4 bg-base-200 rounded-xl mt-4 flex flex-col" style="height: 200px;">
-        <h3 class="text-lg font-bold mb-4">Tchat</h3>
+        <h3 class="text-lg font-bold mb-4">Chat</h3>
         <textarea [(ngModel)]="myChatMessage" class="flex-grow bg-base-100 rounded-lg p-2 mb-4" placeholder="Entrez votre message ici..."></textarea>
         <div class="flex justify-end">
           <button class="btn btn-primary" (click)="sendMessage()">Envoyer</button>
         </div>
       </div>
-
     </div>
 
     <div class="flex-grow flex flex-col">
-    <!-- Espace interactif du jeu -->
-      <div class="flex-grow bg-base-100 rounded-xl p-4 text-800">
+      <!-- Espace interactif du jeu -->
+      <div class="flex-grow bg-base-100 rounded-xl p-4 text-800 ">
         <!-- En-tête pour afficher le nom du jeu -->
         <div class="flex justify-center">
-          <h2 class="text-lg font-bold">Morpion</h2>
+          <h2 class="text-lg font-bold">{{currentGameName}}</h2>
         </div>
         <div class="divider"></div>
-        <!-- Insérer ici le composant interactif du jeu -->
-        <!-- Vous pouvez ajouter du contenu ici, comme une image ou du texte -->
-      </div>
-      <div class="bg-base-100 rounded-xl p-4 text-800 relative mt-4 overflow-auto " style="max-height: 150px;">
-        <!-- Insérer du texte ici -->
-          <div  *ngFor="let message of chatMessagesByGameRoom[currentGameRoomId]" class=" chat-bubble chat-bubble-primary mb-2">
-            <p class="text-sm">
-              <strong>{{ message.from }}</strong> : {{ message.msg }}
-            </p>
+
+        <br><br><br> <!--Used to center the game. Don't remove-->
+
+        <!-- Composant interactif du jeu (morpion)-->
+
+        <div *ngIf="isStarted && dataFromServer" class="flex justify-center items-center mt-4">
+
+            <!-- Other SVG elements can go here -->
+            <ng-container *ngIf="dataFromServer">
+              <svg [attr.width]="dataFromServer.displays[0]!.width" [attr.height]="dataFromServer.displays[0]!.height" xmlns="http://www.w3.org/2000/svg" version="1.1">
+                <ng-container *ngFor="let element of dataFromServer.displays[0]?.content || []">
+                  <!-- Use ng-container to render the SVG elements dynamically -->
+
+                    <ng-container *ngIf="element.tag">
+                      <ng-container [ngSwitch]="element.tag">
+                        <line *ngSwitchCase="'line'"
+                              [attr.x1]="element.x1"
+                              [attr.y1]="element.y1"
+                              [attr.x2]="element.x2"
+                              [attr.y2]="element.y2"
+                              stroke="black"
+                              strokeWidth="4">
+                        </line>
+                        <circle *ngSwitchCase="'circle'"
+                                [attr.cx]="element.cx"
+                                [attr.cy]="element.cy"
+                                [attr.r]="element.r"
+                                [attr.fill]="element.fill">
+                        </circle>
+                        <!-- Add more cases for other SVG elements if needed -->
+                      </ng-container>
+                    </ng-container>
+                </ng-container>
+              </svg>
+            </ng-container>
+
+
+        </div>
+
+        <!-- PAD choix-->
+        <ng-container *ngIf="isStarted" >
+          <div class="flex items-end justify-start mt-4">
+            <div class="grid grid-cols-3 gap-1">
+              <label *ngFor="let key of sortedMorpionKeys" class="border-2 border-gray-300 bg-white p-4 flex justify-center items-center rounded-md">
+                <input type="radio" name="radio-1" class="radio radio-xs" [checked]="key === selectedCase" [disabled]="getDisabledState(key)" (click)="selectCase(key)" />
+              </label>
+            </div>
           </div>
+
+          <!-- Bouton "Jouer cette case" -->
+          <div class="mt-4 flex justify-start">
+            <button class="btn btn-neutral" [disabled]="selectedCase === null || !yourTurn" (click)="playThisCase()">Jouer cette case</button>
+          </div>
+        </ng-container>
+      </div>
+
+      <!--Chat messages -->
+      <div class="bg-base-100 rounded-xl p-4 text-800 relative mt-4 overflow-auto " style="max-height: 150px;">
+        <div  *ngFor="let message of chatMessagesByGameRoom[currentGameRoomId]" class=" chat-bubble chat-bubble-primary mb-2">
+          <p class="text-sm">
+            <strong>{{ message.from }}</strong> : {{ message.msg }}
+          </p>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Footer -->
   <div class="p-4 bg-base-300 text-gray-800 flex justify-center">
-    <button class="btn btn-primary">Lancer jeu</button>
+    <button class="btn btn-primary" [disabled]="!canBeLaunched || isStarted" (click)="startGame()">Lancer jeu</button>
   </div>
 </div>
