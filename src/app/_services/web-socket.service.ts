@@ -26,6 +26,13 @@ export class WebSocketService {
     this.socket.emit('sendMessage', message);
   }
 
+  sendCase(toSend : {
+    actions :
+      {x : number, y : number, player : number}[]
+  }) : void {
+    this.socket.emit('sendCase', toSend)
+  }
+
   connectGame(pseudo: string | null): void {
     this.socket.emit('connectGame', pseudo);
   }

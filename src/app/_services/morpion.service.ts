@@ -7,16 +7,17 @@ import {IMorpionCoordinates} from "../_interfaces/IMorpionCoordinates";
 })
 export class MorpionService {
   keyToCoordinatesMap : Map<MorpionKey,IMorpionCoordinates> = new Map([
-    [MorpionKey.BottomLeft,{x:0,y:0}],
-    [MorpionKey.BottomMid,{x:100,y:0}],
-    [MorpionKey.BottomRight,{x:200,y:0}],
+    [MorpionKey.BottomLeft,{x:0,y:200}],
+    [MorpionKey.BottomMid,{x:100,y:200}],
+    [MorpionKey.BottomRight,{x:200,y:200}],
     [MorpionKey.Center,{x:100,y:100}],
     [MorpionKey.MidLeft,{x:0,y:100}],
     [MorpionKey.MidRight,{x:200,y:100}],
-    [MorpionKey.TopLeft,{x:0,y:200}],
-    [MorpionKey.TopMid,{x:100,y:200}],
-    [MorpionKey.TopRight,{x:200,y:200}],
+    [MorpionKey.TopLeft,{x:0,y:0}],
+    [MorpionKey.TopMid,{x:100,y:0}],
+    [MorpionKey.TopRight,{x:200,y:0}],
   ])
+
   constructor() { }
 
   getCoordinatesFromKey(key : MorpionKey) : IMorpionCoordinates | undefined{

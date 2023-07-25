@@ -11,6 +11,8 @@ import {IPadMorpion} from "../../_interfaces/IPadMorpion";
 import {MorpionKey} from "../../_enums/MorpionKey";
 
 import {IDataFromServer} from "../../_interfaces/IDataFromServerInterfaces";
+import {MorpionService} from "../../_services/morpion.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-game-room',
@@ -22,11 +24,7 @@ export class GameRoomComponent implements OnInit {
   svgElements : any = []
 
   MAX_PLAYER_MORPION = 2
-  //Game Session
-  // canBeLaunched : boolean = false;
-  // isStarted : boolean = false;
-
-  //Pour tests
+  notifications = ""
   canBeLaunched : boolean = false;
   isStarted : boolean = false;
   yourTurn = false;
@@ -47,6 +45,7 @@ export class GameRoomComponent implements OnInit {
   creatorRoom: string = "";
   currentGameName : string = "" ;
   maxPlayers: number = 0;
+  starterOfTheGame: string | null = "";
   gameConnectedUsers : string[] = [];
 ///
 
@@ -81,7 +80,9 @@ export class GameRoomComponent implements OnInit {
     private gameRoomService: GameRoomService,
     private userService: UserService,
     private themeService: ThemeService,
-    private webSocketService: WebSocketService
+    private morpionService : MorpionService,
+    private webSocketService: WebSocketService,
+    private toastr : ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -184,13 +185,39 @@ export class GameRoomComponent implements OnInit {
   private subscribeToGameDataFromServer() : void {
     this.webSocketService.getGameDataFromServer();
     this.webSocketService.gameDataFromServer$.subscribe((data) => {
-      this.dataFromServer= data;
+      this.dataFromServer= data.dataFromPython;
+      if(this.dataFromServer!.game_state.game_over === true){
+        if(this.dataFromServer!.game_state.scores[0] === 1 && this.starterOfTheGame === this.currentUserPseudo){
+          this.notifications = "BRAVO ! Vous avez gagné !"
+          //this.toastr.success("Vous avez gagné !", "Partie terminée !")
+        }else if(this.dataFromServer!.game_state.scores[0] === 0 && this.starterOfTheGame === this.currentUserPseudo){
+          this.notifications = "Dommage ... Vous avez perdu "
+          //this.toastr.error("Vous avez perdu !", "Partie terminée !")
+        }else if(this.dataFromServer!.game_state.scores[0] === 1 && this.starterOfTheGame !== this.currentUserPseudo){
+          this.notifications = "Dommage ... Vous avez perdu "
+          //this.toastr.error("Vous avez perdu !", "Partie terminée !")
+        }else if(this.dataFromServer!.game_state.scores[0] === 0 && this.starterOfTheGame !== this.currentUserPseudo){
+          this.notifications = "BRAVO ! Vous avez gagné !"
+          //this.toastr.success("Vous avez gagné !", "Partie terminée !")
+        }else{
+          this.notifications = "Match nul ! C'était tendu ..."
+          //this.toastr.info("Match nul !", "Partie terminée !")
+        }
+        this.disconnectGame()
+        setTimeout(() => {
+          this.refreshPage()
+        }, 4000);
+      }
+      if(data.turn === this.currentUserPseudo){
+        this.yourTurn = true;
+      }
       console.log("DataServer Jsonifier" + JSON.stringify(this.dataFromServer))
     });
   }
 
   public connectGame(){
     this.webSocketService.connectGame(this.currentUserPseudo)
+    this.notifications = "Vous avez rejoint la partie !"
   }
 
   public disconnectGame(){
@@ -200,6 +227,8 @@ export class GameRoomComponent implements OnInit {
   public startGame(){
     this.webSocketService.startGame(this.currentUserPseudo)
     this.yourTurn = true;
+    this.starterOfTheGame = this.currentUserPseudo
+    this.notifications = "Vous avez commencé la partie !"
   }
 
   playThisCase() {
@@ -212,32 +241,34 @@ export class GameRoomComponent implements OnInit {
       this.padMorpion.touches.set(this.selectedCase, true);
       console.log('Valeur apres selection: ', this.padMorpion.touches.get(this.selectedCase));
 
+      let dataToSend
+      let dataClient;
+      // Envoyer la case sélectionnée au serveur
+      if(this.starterOfTheGame === this.currentUserPseudo){
+        dataToSend = {
+          x : this.morpionService.getCoordinatesFromKey(this.selectedCase)!.x,
+          y : this.morpionService.getCoordinatesFromKey(this.selectedCase)!.y,
+          player : 1
+        }
+      }else{
+        dataToSend = {
+          x : this.morpionService.getCoordinatesFromKey(this.selectedCase)!.x,
+          y : this.morpionService.getCoordinatesFromKey(this.selectedCase)!.y,
+          player : 2
+        }
+      }
+      dataClient = {
+        actions : [
+          dataToSend
+        ]
+      }
+      this.webSocketService.sendCase(dataClient);
       // Réinitialiser la sélection après avoir joué la case
       this.selectedCase = null;
-      this.yourTurn = false ;
+      //this.yourTurn = false ;
     }
   }
 
-  // displayGameContent(){
-  //   if(this.dataFromServer.displays){
-  //     for (let i = 1; i < this.dataFromServer.displays[0].content.length; i++) {
-  //       if (this.dataFromServer.displays[0].content[i].tag === "line") {
-  //         this.svgElements.push(<line x1={this.dataFromServer.displays[0].content[i].x1}
-  //         x2={this.dataFromServer.displays[0].content[i].x2}
-  //         y1={this.dataFromServer.displays[0].content[i].y1}
-  //         y2={this.dataFromServer.displays[0].content[i].y2}
-  //         stroke={"black"}
-  //         strokeWidth="4"/>);
-  //       }
-  //       if (this.dataFromServer.displays[0].content[i].tag === "circle") {
-  //         this.svgElements.push(<circle cx={this.dataFromServer.displays[0].content[i].cx}
-  //         cy={this.dataFromServer.displays[0].content[i].cy}
-  //         r={this.dataFromServer.displays[0].content[i].r}
-  //         fill={this.dataFromServer.displays[0].content[i].fill}/>);
-  //       }
-  //     }
-  //   }
-  // }
 
   selectCase(key: MorpionKey) {
     this.selectedCase = key;
@@ -322,6 +353,9 @@ export class GameRoomComponent implements OnInit {
     });
     this.morpionKeys = Object.values(MorpionKey);
     this.selectedCase = null;
+  }
+  private refreshPage() {
+    location.reload();
   }
 
 }

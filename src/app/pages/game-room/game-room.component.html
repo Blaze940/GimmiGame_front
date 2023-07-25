@@ -35,8 +35,8 @@
       <!-- Participants du jeu -->
       <div class="p-4 bg-base-200 rounded-xl relative" style="overflow: auto; max-height: 150px;">
         <div class="absolute top-4 right-4 flex space-x-2">
-          <button *ngIf="!hasJoinGameSession" class="btn btn-primary btn-sm" (click)="connectGame()">Rejoindre</button>
-          <button *ngIf="hasJoinGameSession"class="btn btn-danger btn-sm" (click)="disconnectGame()">Quitter</button>
+          <button *ngIf="!hasJoinGameSession && !isStarted" class="btn btn-primary btn-sm" (click)="connectGame()">Rejoindre</button>
+          <button *ngIf="hasJoinGameSession && !isStarted" class="btn btn-danger btn-sm" (click)="disconnectGame()">Quitter</button>
         </div>
         <h3 class="text-lg font-bold mb-4">Session en cours</h3>
         <h3 class="text-sm font-bold mb-4 text-red-500">{{gameConnectedUsers.length}}/2 joueurs</h3>
@@ -52,8 +52,8 @@
         <p class="text-lg font-bold">Notifications</p>
         <ul class="mt-2">
           <!-- Insérer ici les notifications du jeu -->
-          <li class="text-base text-sm font-bold text-green-500">* C'est à votre tour de jouer</li>
           <li class="text-base text-sm font-bold text-green-500">* En attente du joueur adverse</li>
+          <li *ngIf="notifications" class="text-base text-sm font-bold text-green-500">* {{notifications}}</li>
           <!-- Vous pouvez ajouter d'autres notifications ici -->
         </ul>
       </div>
