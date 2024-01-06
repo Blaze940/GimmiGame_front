@@ -1,6 +1,6 @@
 # Prerequisites (local mode only)
 
-Run the server available at `https://github.com/Blaze940/GimmiGame_back` and follow the instructions in the README.md file.
+Run the server in local available at `https://github.com/Blaze940/GimmiGame_back` and follow the instructions in the README.md file.
 
 # GimmiFront
 
