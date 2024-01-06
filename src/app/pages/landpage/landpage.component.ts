@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../_services/user.service';
 
 @Component({
   selector: 'app-landpage',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./landpage.component.css'],
 })
 export class LandpageComponent implements OnInit {
-  constructor() {}
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
   }
 
-  ///Mettre condition pour charger user si connecté
+  isLogged(): boolean {
+    return this.userService.isLogged();
+  }
 }
