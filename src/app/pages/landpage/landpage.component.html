@@ -9,15 +9,20 @@
         <br>
         Découvrez de nouveaux jeux, créez des parties et atteignez les plus hauts rangs du classement !
       </p>
-      <div class="flex gap-4">
-        <a routerLink="/login" class="btn btn-primary">Se connecter</a>
-        <a routerLink="/register" class="btn btn-neutral">S'inscrire</a>
+      <div *ngIf="!isLogged(); else loggedInBlock">
+        <div class="flex gap-4">
+          <a routerLink="/login" class="btn btn-primary">Se connecter</a>
+          <a routerLink="/register" class="btn btn-neutral">S'inscrire</a>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<ng-template #loggedInBlock>
+  <a class="btn btn-neutral">Vous êtes connecté(e) !</a>
+</ng-template>
 
 <!-- Second component -->
-<app-login-card></app-login-card>
+<app-login-card *ngIf="!isLogged();"></app-login-card>
 
-<app-register-card></app-register-card>
+<app-register-card *ngIf="!isLogged();"></app-register-card>
